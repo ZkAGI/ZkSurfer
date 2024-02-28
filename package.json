@@ -2,7 +2,6 @@
   "name": "autosurf-ai-browser-extension",
   "version": "1.1.0",
   "description": "Web agent to do your bidding online",
-
   "scripts": {
     "build": "node utils/build.js",
     "start": "node utils/webserver.js",
@@ -13,6 +12,8 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.16",
     "@chakra-ui/react": "^2.4.8",
+    "@cubist-labs/cubesigner-sdk": "^0.3.25",
+    "@cubist-labs/cubesigner-sdk-fs-storage": "^0.3.25",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mozilla/readability": "^0.4.2",
@@ -21,6 +22,7 @@
     "babel-jest": "^29.5.0",
     "dotenv-webpack": "^8.0.1",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "express-handlebars": "^7.1.2",
     "framer-motion": "^8.4.3",
     "immer": "^9.0.21",
     "lodash": "^4.17.21",

@@ -1,8 +1,3 @@
-import {
-  Configuration,
-  CreateCompletionResponseUsage,
-  OpenAIApi,
-} from 'openai';
 import { useAppState } from '../state/store';
 import { availableActions } from './availableActions';
 import { ParsedResponseSuccess } from './parseResponse';
@@ -42,17 +37,8 @@ export async function determineNextAction(
 ) {
   const model = useAppState.getState().settings.selectedModel;
   const prompt = formatPrompt(taskInstructions, previousActions, simplifiedDOM);
-  const key = useAppState.getState().settings.openAIKey;
-  if (!key) {
-    notifyError?.('No OpenAI key found');
-    return null;
-  }
 
-  const openai = new OpenAIApi(
-    new Configuration({
-      apiKey: key,
-    })
-  );
+  const apiEndpoint = 'https://leo.tektorch.info/chat/completions'; // Replace with your own API endpoint
 
   const maxSystemMessageLength = 3000; // Choose a reasonable length for the system message
   const truncatedSystemMessage = systemMessage.substring(0, maxSystemMessageLength);
@@ -61,30 +47,33 @@ export async function determineNextAction(
     try {
       const messages = [
         {
-          role: 'system',
-          content: truncatedSystemMessage,
-        },
-        { role: 'user', content: prompt },
-      ];
+          role: "user",
+          content: prompt+" "+truncatedSystemMessage
+        }
+      ]
+      console.log(JSON.stringify({ messages }))
 
-      const completion = await openai.createChatCompletion({
-        model: model,
-        messages: messages,
-        max_tokens: 500,
-        temperature: 0,
-        stop: ['</Action>'],
-      });
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages }),
+      }
+      );
+
+      const data = await response.json();
+      console.log(data[0].content);
 
       return {
-        usage: completion.data.usage as CreateCompletionResponseUsage,
+        usage: data.usage, // Replace with your own API response format
         prompt,
-        response:
-          completion.data.choices[0].message?.content?.trim() + '</Action>',
+        response: data[0].content, // Replace with your own API response format
       };
     } catch (error: any) {
       console.log('determineNextAction error', error);
       if (error.response.data.error.message.includes('server error')) {
-        // Problem with the OpenAI API, try again
+        // Problem with the API, try again
         if (notifyError) {
           notifyError(error.response.data.error.message);
         }

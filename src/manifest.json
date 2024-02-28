@@ -13,6 +13,14 @@
     "debugger",
     "management"
   ],
+  "host_permissions": [
+    "https://accounts.google.com/",
+    "https://apis.google.com",
+    "https://www.gstatic.com",
+    "https://www.googleapis.com",
+    "https://securetoken.googleapis.com"
+  ],
+  
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon-34.png"
