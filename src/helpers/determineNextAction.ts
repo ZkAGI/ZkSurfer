@@ -25,6 +25,7 @@ This is an example of an action:
 <Thought>I should click the add to cart button</Thought>
 <Action>click(223)</Action>
 
+Response should contain only one <Thought> and one <Action>
 Always include the <Thought> and <Action> open/close tags, or your response will be marked as invalid.
 `;
 
@@ -35,13 +36,18 @@ export async function determineNextAction(
   maxAttempts = 3,
   notifyError?: (error: string) => void
 ) {
-  const model = useAppState.getState().settings.selectedModel;
+  const model = "mixtral"
   const prompt = formatPrompt(taskInstructions, previousActions, simplifiedDOM);
 
   const apiEndpoint = 'https://leo.tektorch.info/chat/completions'; // Replace with your own API endpoint
+  // const apiEndpoint = 'https://1ef2-164-52-213-234.ngrok-free.app/api/chat'; // Replace with your own API endpoint
 
   const maxSystemMessageLength = 3000; // Choose a reasonable length for the system message
   const truncatedSystemMessage = systemMessage.substring(0, maxSystemMessageLength);
+  // const FETCH_TIMEOUT = 60000; // 60 seconds
+  interface CustomRequestInit extends RequestInit {
+    timeout?: number;
+  }
 
   for (let i = 0; i < maxAttempts; i++) {
     try {
@@ -51,16 +57,16 @@ export async function determineNextAction(
           content: prompt+" "+truncatedSystemMessage
         }
       ]
-      console.log(JSON.stringify({ messages }))
+      console.log(JSON.stringify({messages }))
 
       const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ messages }),
+          'Content-Type': 'application/json',},
+          body: JSON.stringify({ messages }),
       }
       );
+      // const response = await fetch(apiEndpoint, requestOptions as RequestInit);
 
       const data = await response.json();
       console.log(data[0].content);
