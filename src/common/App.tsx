@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, ChakraProvider, Heading, HStack } from '@chakra-ui/react';
+import { Box, ChakraProvider, Heading, HStack, Tabs, TabList, Tab, TabPanels, TabPanel, Button } from '@chakra-ui/react';
 import { useAppState } from '../state/store';
 import ModelDropdown from './ModelDropdown';
 import SetAPIKey from './SetAPIKey';
@@ -19,12 +19,51 @@ const App: React.FC = () => {
   return (
     <ChakraProvider>
       <Box p="8" fontSize="lg" w="full">
-        {/* {formSubmitted ? (
-          <AppUI />
-        ) : (
-          <FormComponent onFormSubmit={handleFormSubmit} />
-        )} */}
-        <AppUI/>
+        <Box mb={4}>
+          <HStack mb={4} alignItems="center">
+            <img
+              src={logo}
+              width={32}
+              height={32}
+              className="App-logo"
+              alt="logo"
+            />
+
+            <Heading as="h1" size="lg" flex={1}>
+              Autosurf
+            </Heading>
+            <HStack spacing={2}>
+              <ModelDropdown />
+              <OptionsDropdown />
+            </HStack>
+          </HStack>
+        </Box>
+        <Tabs>
+          <TabList>
+            <Tab>App</Tab>
+            <Tab>Node</Tab> {/* New tab named "Node" */}
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              {/* {formSubmitted ? (
+                <AppUI />
+              ) : (
+                <FormComponent onFormSubmit={handleFormSubmit} />
+              )} */}
+              <AppUI/>
+            </TabPanel>
+            <TabPanel>
+              {/* Content for the "Node" tab goes here */}
+              <Box>
+                <Heading as="h2" size="md">Content for Node Tab</Heading>
+                <HStack spacing={4} mt={4}>
+                  <Button colorScheme="blue">Taiko</Button>
+                  <Button colorScheme="green">Aleo</Button>
+                </HStack>
+              </Box>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </Box>
     </ChakraProvider>
   );
@@ -35,23 +74,6 @@ const AppUI: React.FC = () => {
 
   return (
     <>
-      <HStack mb={4} alignItems="center">
-        <img
-          src={logo}
-          width={32}
-          height={32}
-          className="App-logo"
-          alt="logo"
-        />
-
-        <Heading as="h1" size="lg" flex={1}>
-          Autosurf
-        </Heading>
-        <HStack spacing={2}>
-          <ModelDropdown />
-          <OptionsDropdown />
-        </HStack>
-      </HStack>
       {openAIKey ? <TaskUI /> : <SetAPIKey />}
     </>
   );
