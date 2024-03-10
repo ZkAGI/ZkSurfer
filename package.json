@@ -24,6 +24,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "express-handlebars": "^7.1.2",
     "framer-motion": "^8.4.3",
+    "groq-sdk": "^0.3.1",
     "immer": "^9.0.21",
     "lodash": "^4.17.21",
     "openai": "^3.2.1",

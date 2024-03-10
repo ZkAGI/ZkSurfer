@@ -1,7 +1,7 @@
 import { ActionPayload, availableActions } from './availableActions';
 
 export type ParsedResponseSuccess = {
-  thought: string;
+  // thought: string;
   action: string;
   parsedAction: ActionPayload;
 };
@@ -13,14 +13,14 @@ export type ParsedResponse =
   };
 
 export function parseResponse(text: string): ParsedResponse {
-  const thoughtMatch = text.match(/<Thought>(.*?)<\/Thought>/);
+  // const thoughtMatch = text.match(/<Thought>(.*?)<\/Thought>/);
   const actionMatch = text.match(/<Action>(.*?)<\/Action>/);
 
-  if (!thoughtMatch) {
-    return {
-      error: 'Invalid response: Thought not found in the model response.',
-    };
-  }
+  // if (!thoughtMatch) {
+  //   return {
+  //     error: 'Invalid response: Thought not found in the model response.',
+  //   };
+  // }
 
   if (!actionMatch) {
     return {
@@ -28,7 +28,7 @@ export function parseResponse(text: string): ParsedResponse {
     };
   }
 
-  const thought = thoughtMatch[1];
+  // const thought = thoughtMatch[1];
   const actionString = actionMatch[1];
   const actionPattern = /(\w+)\((.*?)\)/;
   const actionParts = actionString.match(actionPattern);
@@ -92,7 +92,6 @@ export function parseResponse(text: string): ParsedResponse {
       parsedArgs[expectedArg.name] = stringValue;
     } else {
       return {
-        // @ts-expect-error this is here to make sure we don't forget to update this code if we add a new arg type
         error: `Invalid argument type: Unknown type "${expectedArg.type}" for argument "${expectedArg.name}".`,
       };
     }
@@ -104,7 +103,7 @@ export function parseResponse(text: string): ParsedResponse {
   } as ActionPayload;
 
   return {
-    thought,
+    // thought,
     action: actionString,
     parsedAction,
   };

@@ -1,3 +1,5 @@
+import { Groq } from 'groq-sdk';
+
 import { useAppState } from '../state/store';
 import { availableActions } from './availableActions';
 import { ParsedResponseSuccess } from './parseResponse';
@@ -10,6 +12,7 @@ const formattedActions = availableActions
     return `${i + 1}. ${action.name}(${args}): ${action.description}`;
   })
   .join('\n');
+
 
 const systemMessage = `
 You are a browser automation assistant.
@@ -37,9 +40,15 @@ export async function determineNextAction(
 ) {
   const model = useAppState.getState().settings.selectedModel;
   const prompt = formatPrompt(taskInstructions, previousActions, simplifiedDOM);
-
-  const apiEndpoint = 'https://leo.tektorch.info/chat/completions'; // Replace with your own API endpoint
-
+  const key = "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"
+  if (!key) {
+    notifyError?.('No Groq key found');
+    return null;
+  }
+  const groq = new Groq({
+    apiKey: key,
+    dangerouslyAllowBrowser: true
+});
   const maxSystemMessageLength = 3000; // Choose a reasonable length for the system message
   const truncatedSystemMessage = systemMessage.substring(0, maxSystemMessageLength);
 
@@ -47,33 +56,31 @@ export async function determineNextAction(
     try {
       const messages = [
         {
-          role: "user",
-          content: prompt+" "+truncatedSystemMessage
-        }
-      ]
-      console.log(JSON.stringify({ messages }))
-
-      const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+          role: 'system',
+          content: truncatedSystemMessage,
         },
-        body: JSON.stringify({ messages }),
-      }
-      );
-
-      const data = await response.json();
-      console.log(data[0].content);
-
+        { role: 'user', content: prompt },
+      ];
+  
+      const query = await groq.chat.completions.create({
+        model: "mixtral-8x7b-32768",
+        messages: messages,
+        max_tokens: 500,
+        temperature: 0,
+        stop: ['</Action>'],
+      });
+  
+      // const response = await query.fetch(key);
+  
       return {
-        usage: data.usage, // Replace with your own API response format
         prompt,
-        response: data[0].content, // Replace with your own API response format
+        response:
+          query.choices[0].message?.content?.trim() + '</Action>',
       };
     } catch (error: any) {
       console.log('determineNextAction error', error);
       if (error.response.data.error.message.includes('server error')) {
-        // Problem with the API, try again
+        // Problem with the Groq API, try again
         if (notifyError) {
           notifyError(error.response.data.error.message);
         }
@@ -100,7 +107,8 @@ export function formatPrompt(
     const serializedActions = previousActions
       .map(
         (action) =>
-          `<Thought>${action.thought}</Thought>\n<Action>${action.action}</Action>`
+          // `<Thought>${action.thought}</Thought>\n<Action>${action.action}</Action>`
+          `<Action>${action.action}</Action>`
       )
       .join('\n\n');
     previousActionsString = `You have already taken the following actions: \n${serializedActions}\n\n`;

@@ -17,10 +17,10 @@ import { sleep, truthyFilter } from '../helpers/utils';
 import { MyStateCreator } from './store';
 
 export type TaskHistoryEntry = {
-  prompt: string;
+  // prompt: string;
   response: string;
   action: ParsedResponse;
-  usage: CreateCompletionResponseUsage;
+  // usage: CreateCompletionResponseUsage;
 };
 
 export type CurrentTaskSlice = {
@@ -132,10 +132,10 @@ export const createCurrentTaskSlice: MyStateCreator<CurrentTaskSlice> = (
 
           set((state) => {
             state.currentTask.history.push({
-              prompt: query.prompt,
+              // prompt: query.prompt,
               response: query.response,
               action,
-              usage: query.usage,
+              // usage: query.usage,
             });
           });
           if ('error' in action) {

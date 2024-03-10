@@ -11,7 +11,9 @@
     "storage",
     "clipboardWrite",
     "debugger",
-    "management"
+    "management",
+    "identity",
+    "https://cubesigner-backend-production.up.railway.app/"
   ],
   "host_permissions": [
     "https://accounts.google.com/",
@@ -35,6 +37,11 @@
       "css": ["content.styles.css"]
     }
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'",
+    "sandbox": "sandbox allow-scripts"
+  },
+
   "devtools_page": "devtools.html",
   "web_accessible_resources": [
     {
