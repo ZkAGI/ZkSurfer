@@ -7,6 +7,7 @@ import TaskUI from './TaskUI';
 import OptionsDropdown from './OptionsDropdown';
 import logo from '../assets/img/icon-128.png';
 import FormComponent from '../pages/Popup/FormComponent'; // Import the FormComponent
+import ChatUI from './ChatUI';
 
 const App: React.FC = () => {
   const openAIKey = useAppState((state) => state.settings.openAIKey);
@@ -181,6 +182,7 @@ const App: React.FC = () => {
           <TabList>
             <Tab>App</Tab>
             <Tab>Node</Tab> {/* New tab named "Node" */}
+            <Tab>Chat</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -240,6 +242,9 @@ const App: React.FC = () => {
                   <Heading as="h2" size="md">{successMessage}</Heading>
                 )}
               </Box>
+            </TabPanel>
+            <TabPanel>
+              <ChatUI/>
             </TabPanel>
           </TabPanels>
         </Tabs>

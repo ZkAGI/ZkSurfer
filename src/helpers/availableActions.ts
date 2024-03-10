@@ -61,6 +61,88 @@ export const availableActions = [
       },
     ],
   },
+  {
+    name: 'taikoNodeEnvironmentSetup',
+    description: 'Sets up Taiko node environment',
+    args: [
+      {
+        name: 'host',
+        type: 'string',
+      },
+      {
+        name: 'username',
+        type: 'string',
+      },
+      {
+        name: 'Password',
+        type: 'string',
+      },
+    ],
+  },
+  {
+    name: 'taikoNodeDashboardSetup',
+    description: 'Sets up Taiko node and dashboard',
+    args: [
+      {
+        name: 'host',
+        type: 'string',
+      },
+      {
+        name: 'username',
+        type: 'string',
+      },
+      {
+        name: 'Password',
+        type: 'string',
+      },
+      {
+        name: 'L1_ENDPOINT_HTTP',
+        type: 'string',
+      },
+      {
+        name: 'L1_ENDPOINT_WS',
+        type: 'string',
+      },
+      {
+        name: 'ENABLE_PROPOSER',
+        type: 'boolean',
+      },
+      {
+        name: 'L1_PROPOSER_PRIVATE_KEY',
+        type: 'string',
+      },
+      {
+        name: 'PROPOSE_BLOCK_TX_GAS_LIMIT',
+        type: 'number',
+      },
+      {
+        name: 'BLOCK_PROPOSAL_FEE',
+        type: 'number',
+      },
+    ],
+  },
+  {
+    name: 'changeNodePassword',
+    description: 'Changes the password of a node',
+    args: [
+      {
+        name: 'host',
+        type: 'string',
+      },
+      {
+        name: 'username',
+        type: 'string',
+      },
+      {
+        name: 'currentPassword',
+        type: 'string',
+      },
+      {
+        name: 'newPassword',
+        type: 'string',
+      },
+    ],
+  },
   
 ] as const;
 
