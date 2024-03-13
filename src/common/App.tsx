@@ -178,7 +178,7 @@ const App: React.FC = () => {
             </HStack>
           </HStack>
         </Box>
-              {loggedIn ? (
+              {/* {loggedIn ? ( */}
         <Tabs>
           <TabList>
             <Tab>App</Tab>
@@ -249,9 +249,9 @@ const App: React.FC = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-           ) : (
+           {/* ) : (
             <LoginComponent />
-          )} 
+          )}  */}
       </Box>
     </ChakraProvider>
   );
