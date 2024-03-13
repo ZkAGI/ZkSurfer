@@ -1,4 +1,3 @@
-import { Groq } from 'groq-sdk';
 
 import { availableActions } from './availableChatActions';
 
@@ -16,41 +15,31 @@ export async function determineNextChat(
   maxAttempts = 3,
   notifyError?: (error: string) => void
 ) {
-  const key = "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";
-  if (!key) {
-    notifyError?.('No Groq key found');
-    return null;
-  }
-  const groq = new Groq({
-    apiKey: key,
-    dangerouslyAllowBrowser: true
-  });
+  
 
   const systemMessage = `
-    You are a AI assistant.
-    You can use the following tool
+  You are an AI assistant.
+  You can use the following tool
 
-     ${formattedActions}
-     This is an example of an action:
-      
-      <Action>taikoNodeEnvironmentSetup('192.162.2.1','root','admin123')</Action>
+  1. Change Node Password(host: string, username: string, currentPassword: string, newPassword: string): Change the password for a node
+  2. Setup Taiko Node Environment(host: string, username: string, password: string): Setup Taiko node environment
+  3. Setup Taiko Node and Dashboard(host: string, username: string, password: string, L1_ENDPOINT_HTTP: string, L1_ENDPOINT_WS: string, ENABLE_PROPOSER: boolean, L1_PROPOSER_PRIVATE_KEY: string, PROPOSE_BLOCK_TX_GAS_LIMIT: number, BLOCK_PROPOSAL_FEE: number): Setup Taiko node and dashboard
+  You should ask user to enter required parameters for the function they ask for
+  You should return response in this format <Action>taikoNodeEnvironmentSetup('192.162.2.1','root','admin123')</Action> only if the user gives all params for action
 
-      Response Should only contain what input we need from user and response should be short
-     
   `;
+  // <Action>taikoNodeEnvironmentSetup('192.162.2.1','root','admin123')</Action>
 
-  const apiEndpoint = 'https://leo.tektorch.info/chat/completions'; // Replace with your own API endpoint
-  // const apiEndpoint = 'https://ad04-164-52-213-234.ngrok-free.app/api/chat'; // Replace with your own API endpoint
+  // const apiEndpoint = 'https://leo.tektorch.info/chat/completions'; // Replace with your own API endpoint
+  const apiEndpoint = 'http://164.52.213.234:8080/api/chat'; // Replace with your own API endpoint
 
   const maxSystemMessageLength = 3000; // Choose a reasonable length for the system message
   const truncatedSystemMessage = systemMessage.substring(0, maxSystemMessageLength);
-  // const FETCH_TIMEOUT = 60000; // 60 seconds
-  interface CustomRequestInit extends RequestInit {
-    timeout?: number;
-  }
+ 
 
   for (let i = 0; i < maxAttempts; i++) {
     try {
+      const model="mistral"
       const messages = [
         {
           role: "user",
@@ -63,7 +52,7 @@ export async function determineNextChat(
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',},
-          body: JSON.stringify({ messages }),
+          body: JSON.stringify({model, messages }),
       }
       );
       // const response = await fetch(apiEndpoint, requestOptions as RequestInit);
