@@ -42,7 +42,7 @@ const useChatStore = create<ChatState>((set) => ({
         const newMessage: ChatMessage = {
           id: Date.now(),
           sender: 'AI assistant',
-          content: response, // Use modified content without <Action> tag
+          content: contentWithoutActionTag, // Use modified content without <Action> tag
           timestamp: Date.now(),
         };
         set((state) => ({ history: [...state.history, newMessage] }));
@@ -54,7 +54,10 @@ const useChatStore = create<ChatState>((set) => ({
         }
         
         const { action, parsedAction } = parsedResponse as ParsedResponseSuccess;
-        
+        if (Array.isArray(parsedAction.args) && parsedAction.args.some(arg => arg.includes('<') && arg.includes('>'))) {
+          console.log("No function call")
+        }else{
+
         // Perform action if specified
         if (parsedAction.name === 'taikoNodeEnvironmentSetup') {
           // Here, you need to provide the required parameters for taikoNodeCreation
@@ -83,7 +86,7 @@ const useChatStore = create<ChatState>((set) => ({
         }
 
         
-      } else {
+      }} else {
         console.error('No chat response received.');
         // Handle null response here, e.g., display error message to user
       }
