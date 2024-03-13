@@ -103,6 +103,17 @@ var options = {
     ],
   },
   resolve: {
+    fallback: {
+      ...(typeof process !== 'undefined' && {
+          crypto: require.resolve('crypto-browserify'),
+          http: require.resolve('stream-http'),
+          https: require.resolve('https-browserify'),
+          zlib: require.resolve('browserify-zlib'),
+          stream: require.resolve('stream-browserify'),
+          vm: require.resolve('vm-browserify')
+      }),
+  },
+
     alias: alias,
     extensions: fileExtensions
       .map((extension) => '.' + extension)

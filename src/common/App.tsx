@@ -8,6 +8,7 @@ import OptionsDropdown from './OptionsDropdown';
 import logo from '../assets/img/icon-128.png';
 import FormComponent from '../pages/Popup/FormComponent'; // Import the FormComponent
 import ChatUI from './ChatUI';
+import LoginComponent from '../Login/LoginComponent';
 
 const App: React.FC = () => {
   const openAIKey = useAppState((state) => state.settings.openAIKey);
@@ -19,6 +20,7 @@ const App: React.FC = () => {
   const [newPassword, setNewPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   // Step 3 state variables
   const [L1_ENDPOINT_HTTP, setL1_ENDPOINT_HTTP] = useState('');
@@ -167,7 +169,6 @@ const App: React.FC = () => {
               className="App-logo"
               alt="logo"
             />
-
             <Heading as="h1" size="lg" flex={1}>
               Autosurf
             </Heading>
@@ -177,7 +178,7 @@ const App: React.FC = () => {
             </HStack>
           </HStack>
         </Box>
-              {/* {formSubmitted ? ( */}
+              {loggedIn ? (
         <Tabs>
           <TabList>
             <Tab>App</Tab>
@@ -248,9 +249,9 @@ const App: React.FC = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-          {/* ) : (
-            <FormComponent onFormSubmit={handleFormSubmit} />
-          )} */}
+           ) : (
+            <LoginComponent />
+          )} 
       </Box>
     </ChakraProvider>
   );
