@@ -45,6 +45,7 @@ function LoginComponent() {
         await web3auth.init();
         setProvider(web3auth.provider);
         if (web3auth.connected) {
+          localStorage.setItem("userLoggedIn","true")
           setLoggedIn(true);
         }
       } catch (error) {
