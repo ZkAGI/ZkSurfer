@@ -179,79 +179,82 @@ const App: React.FC = () => {
           </HStack>
         </Box>
               {/* {loggedIn ? ( */}
-        <Tabs>
-          <TabList>
-            <Tab>App</Tab>
-            <Tab>Node</Tab> {/* New tab named "Node" */}
-            <Tab>Chat</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <AppUI />
-            </TabPanel>
-            <TabPanel>
-              {/* Content for the "Node" tab goes here */}
-              <Box>
-                {step === 1 && (
-                  <>
-                    <Heading as="h2" size="md">Step 1: Change Password</Heading>
-                    <Input placeholder="Host" value={host} onChange={(e) => setHost(e.target.value)} />
-                    <Input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                    <Input placeholder="Current Password" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
-                    <Input placeholder="New Password" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                    <Button colorScheme="blue" onClick={handleChangePassword} disabled={loading}>
-                      {loading ? 'Loading...' : 'Change Password'}
-                    </Button>
-                  </>
-                )}
-                {step === 2 && (
-                  <>
-                    <Heading as="h2" size="md">Step 2: Setup Environment</Heading>
-                    <Button colorScheme="blue" onClick={handleSetupEnvironment} disabled={loading}>
-                      {loading ? 'Loading...' : 'Setup Environment'}
-                    </Button>
-                  </>
-                )}
-                {step === 3 && (
-                  <>
-                    <Heading as="h2" size="md">Step 3: Pass Key and Data</Heading>
-                    <Input placeholder="L1 HTTP endpoint" value={L1_ENDPOINT_HTTP} onChange={(e) => setL1_ENDPOINT_HTTP(e.target.value)} />
-                    <Input placeholder="L1 WS endpoint" value={L1_ENDPOINT_WS} onChange={(e) => setL1_ENDPOINT_WS(e.target.value)} />
-                    <Input placeholder="Enable proposer (true/false)" value={ENABLE_PROPOSER} onChange={(e) => setENABLE_PROPOSER(e.target.value)} />
-                    {ENABLE_PROPOSER === "true" && (
-                      <>
-                        <Input placeholder="L1 proposer private key" value={L1_PROPOSER_PRIVATE_KEY} onChange={(e) => setL1_PROPOSER_PRIVATE_KEY(e.target.value)} />
-                        <Input placeholder="Propose block gas limit" value={PROPOSE_BLOCK_TX_GAS_LIMIT} onChange={(e) => setPROPOSE_BLOCK_TX_GAS_LIMIT(e.target.value)} />
-                        <Input placeholder="Block proposal fee" value={BLOCK_PROPOSAL_FEE} onChange={(e) => setBLOCK_PROPOSAL_FEE(e.target.value)} />
-                      </>
-                    )}
-                    <Button colorScheme="blue" onClick={handleNodesetup} disabled={loading}>
-                      {loading ? 'Loading...' : 'Continue'}
-                    </Button>
-                  </>
-                )}
-                {step === 4 && (
-                  <>
-                    <Heading as="h2" size="md">Step 4: Setup Dashboard</Heading>
-                    <Button colorScheme="blue" onClick={handleSetupDashboard} disabled={loading}>
-                      {loading ? 'Loading...' : 'Setup Dashboard'}
-                    </Button>
-                  </>
-                )}
-                {step === 5 && (
-                  // Success message
-                  <Heading as="h2" size="md">{successMessage}</Heading>
-                )}
-              </Box>
-            </TabPanel>
-            <TabPanel>
-              <ChatUI/>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-           {/* ) : (
-            <LoginComponent />
-          )}  */}
+              <Tabs>
+  <TabList>
+    <Tab>App</Tab>
+    <Tab>Node</Tab> {/* New tab named "Node" */}
+    <Tab>Chat</Tab>
+  </TabList>
+  <TabPanels>
+    <TabPanel>
+      <AppUI />
+    </TabPanel>
+    <TabPanel>
+      {/* Content for the "Node" tab goes here */}
+      <Box>
+        {step === 1 && (
+          <>
+            <Heading as="h2" size="md">Step 1: Change Password</Heading>
+            <Input placeholder="Host" value={host} onChange={(e) => setHost(e.target.value)} />
+            <Input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+            <Input placeholder="Current Password" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+            <Input placeholder="New Password" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+            <Button colorScheme="blue" onClick={handleChangePassword} disabled={loading}>
+              {loading ? 'Loading...' : 'Change Password'}
+            </Button>
+          </>
+        )}
+        {step === 2 && (
+          <>
+            <Heading as="h2" size="md">Step 2: Setup Environment</Heading>
+            <Button colorScheme="blue" onClick={handleSetupEnvironment} disabled={loading}>
+              {loading ? 'Loading...' : 'Setup Environment'}
+            </Button>
+          </>
+        )}
+        {step === 3 && (
+          <>
+            <Heading as="h2" size="md">Step 3: Pass Key and Data</Heading>
+            <Input placeholder="L1 HTTP endpoint" value={L1_ENDPOINT_HTTP} onChange={(e) => setL1_ENDPOINT_HTTP(e.target.value)} />
+            <Input placeholder="L1 WS endpoint" value={L1_ENDPOINT_WS} onChange={(e) => setL1_ENDPOINT_WS(e.target.value)} />
+            <Input placeholder="Enable proposer (true/false)" value={ENABLE_PROPOSER} onChange={(e) => setENABLE_PROPOSER(e.target.value)} />
+            {ENABLE_PROPOSER === "true" && (
+              <>
+                <Input placeholder="L1 proposer private key" value={L1_PROPOSER_PRIVATE_KEY} onChange={(e) => setL1_PROPOSER_PRIVATE_KEY(e.target.value)} />
+                <Input placeholder="Propose block gas limit" value={PROPOSE_BLOCK_TX_GAS_LIMIT} onChange={(e) => setPROPOSE_BLOCK_TX_GAS_LIMIT(e.target.value)} />
+                <Input placeholder="Block proposal fee" value={BLOCK_PROPOSAL_FEE} onChange={(e) => setBLOCK_PROPOSAL_FEE(e.target.value)} />
+              </>
+            )}
+            <Button colorScheme="blue" onClick={handleNodesetup} disabled={loading}>
+              {loading ? 'Loading...' : 'Continue'}
+            </Button>
+          </>
+        )}
+        {step === 4 && (
+          <>
+            <Heading as="h2" size="md">Step 4: Setup Dashboard</Heading>
+            <Button colorScheme="blue" onClick={handleSetupDashboard} disabled={loading}>
+              {loading ? 'Loading...' : 'Setup Dashboard'}
+            </Button>
+          </>
+        )}
+        {step === 5 && (
+          // Success message
+          <Heading as="h2" size="md">{successMessage}</Heading>
+        )}
+      </Box>
+    </TabPanel>
+    <TabPanel>
+      <ChatUI/>
+    </TabPanel>
+  </TabPanels>
+</Tabs>
+{loggedIn ? (
+  <LogoutComponent />
+) : (
+  <LoginComponent />
+)}
+
       </Box>
     </ChakraProvider>
   );
