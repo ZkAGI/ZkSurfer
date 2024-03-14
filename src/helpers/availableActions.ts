@@ -62,7 +62,7 @@ export const availableActions = [
     ],
   },
   {
-    name: 'taikoNodeEnvironmentSetup',
+    name: 'TaikoNodeEnvironmentSetup',
     description: 'Sets up Taiko node environment',
     args: [
       {
@@ -80,7 +80,7 @@ export const availableActions = [
     ],
   },
   {
-    name: 'taikoNodeDashboardSetup',
+    name: 'TaikoNodeDashboardSetup',
     description: 'Sets up Taiko node and dashboard',
     args: [
       {
@@ -96,33 +96,33 @@ export const availableActions = [
         type: 'string',
       },
       {
-        name: 'L1_ENDPOINT_HTTP',
+        name: 'http_endpoint',
         type: 'string',
       },
       {
-        name: 'L1_ENDPOINT_WS',
+        name: 'ws_endpoint',
+        type: 'string',
+      },
+      // {
+      //   name: 'ENABLE_PROPOSER',
+      //   type: 'boolean',
+      // },
+      {
+        name: 'private_key',
         type: 'string',
       },
       {
-        name: 'ENABLE_PROPOSER',
-        type: 'boolean',
-      },
-      {
-        name: 'L1_PROPOSER_PRIVATE_KEY',
-        type: 'string',
-      },
-      {
-        name: 'PROPOSE_BLOCK_TX_GAS_LIMIT',
+        name: 'gas_limit',
         type: 'number',
       },
       {
-        name: 'BLOCK_PROPOSAL_FEE',
+        name: 'block_fee',
         type: 'number',
       },
     ],
   },
   {
-    name: 'changeNodePassword',
+    name: 'ChangeNodePassword',
     description: 'Changes the password of a node',
     args: [
       {

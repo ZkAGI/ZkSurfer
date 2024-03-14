@@ -1,6 +1,6 @@
 export const availableActions = [
     {
-      name: 'taikoNodeEnvironmentSetup',
+      name: 'TaikoNodeEnvironmentSetup',
       description: 'Sets up Taiko node environment',
       args: [
         {
@@ -18,7 +18,7 @@ export const availableActions = [
       ],
     },
     {
-      name: 'taikoNodeDashboardSetup',
+      name: 'TaikoNodeDashboardSetup',
       description: 'Sets up Taiko node and dashboard',
       args: [
         {
@@ -41,10 +41,10 @@ export const availableActions = [
           name: 'L1_ENDPOINT_WS',
           type: 'string',
         },
-        {
-          name: 'ENABLE_PROPOSER',
-          type: 'boolean',
-        },
+        // {
+        //   name: 'ENABLE_PROPOSER',
+        //   type: 'boolean',
+        // },
         {
           name: 'L1_PROPOSER_PRIVATE_KEY',
           type: 'string',
@@ -60,7 +60,7 @@ export const availableActions = [
       ],
     },
     {
-      name: 'changeNodePassword',
+      name: 'ChangeNodePassword',
       description: 'Changes the password of a node',
       args: [
         {

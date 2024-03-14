@@ -11,14 +11,14 @@ const formattedActions = availableActions
   .join('\n');
   let myArray: { role: string; content: string; }[] = [];
   const mysystemMessage = `
-  You are an AI assistant. 
+  You are an zkml AI assistant You are interaction AI. 
+  You should generate responses of 10 words so that it should be conversational
+  You should only list the action names first then when the user ask question related to that action then you should ask to arguments for that action
+  DONT TELL ARGUMENTS TILL TASK IS DEFINED
   You can use the following tool only if needed
   ${formattedActions}
 
-  IF user asks to create a taiko node first suggest them to change password of there taiko node and then setup taiko environment and then setup dashboard
-  You should generate small responses so that it should be conversational
-  You should return response in this format when you got all details and once user confirms to perform that action with that details <Action>taikoNodeEnvironmentSetup('<host>','<username>','<password>')</Action> only if the user gives all params for action
-
+  The response should contain <Action>ChangeNodePassword("<arguments>")</Action>
   `;
   myArray.push({role:"user",content:mysystemMessage},{role:"assistant",content:"Ok I understood"})
 export async function determineNextChat(
