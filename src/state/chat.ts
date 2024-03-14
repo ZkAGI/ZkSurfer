@@ -59,24 +59,24 @@ const useChatStore = create<ChatState>((set) => ({
         }else{
 
         // Perform action if specified
-        if (parsedAction.name === 'taikoNodeEnvironmentSetup') {
+        if (parsedAction.name === 'TaikoNodeEnvironmentSetup') {
           // Here, you need to provide the required parameters for taikoNodeCreation
           await taikoNodeEnvironmentSetup({host:parsedAction.args.host,username:parsedAction.args.username,password:parsedAction.args.Password});
         }
-        if(parsedAction.name==="taikoNodeDashboardSetup"){
+        if(parsedAction.name==="TaikoNodeDashboardSetup"){
           await taikoNodeAndDashboardSetup({
             host: parsedAction.args.host,
             username: parsedAction.args.username,
             password: parsedAction.args.Password,
-            L1_ENDPOINT_HTTP: parsedAction.args.L1_ENDPOINT_HTTP,
-            L1_ENDPOINT_WS: parsedAction.args.L1_ENDPOINT_WS,
-            ENABLE_PROPOSER: parsedAction.args.ENABLE_PROPOSER === 'true', // Convert to boolean
-            L1_PROPOSER_PRIVATE_KEY: parsedAction.args.L1_PROPOSER_PRIVATE_KEY,
-            PROPOSE_BLOCK_TX_GAS_LIMIT: parsedAction.args.PROPOSE_BLOCK_TX_GAS_LIMIT,
-            BLOCK_PROPOSAL_FEE: parsedAction.args.BLOCK_PROPOSAL_FEE
+            L1_ENDPOINT_HTTP: parsedAction.args.http_endpoint,
+            L1_ENDPOINT_WS: parsedAction.args.ws_endpoint, 
+            // ENABLE_PROPOSER: parsedAction.args.ENABLE_PROPOSER === 'True' , // Convert to boolean
+            L1_PROPOSER_PRIVATE_KEY: parsedAction.args.private_key,
+            PROPOSE_BLOCK_TX_GAS_LIMIT: parsedAction.args.gas_limit,
+            BLOCK_PROPOSAL_FEE: parsedAction.args.block_fee
         });
       }
-        if(parsedAction.name==="changeNodePassword"){
+        if(parsedAction.name==="ChangeNodePassword"){
           await changeNodePassword({
             host: parsedAction.args.host,
             username: parsedAction.args.username,

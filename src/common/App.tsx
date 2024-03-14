@@ -13,23 +13,8 @@ import LoginComponent from '../Login/LoginComponent';
 const App: React.FC = () => {
   const openAIKey = useAppState((state) => state.settings.openAIKey);
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [step, setStep] = useState(1);
-  const [host, setHost] = useState('');
-  const [username, setUsername] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
 
-  // Step 3 state variables
-  const [L1_ENDPOINT_HTTP, setL1_ENDPOINT_HTTP] = useState('');
-  const [L1_ENDPOINT_WS, setL1_ENDPOINT_WS] = useState('');
-  const [ENABLE_PROPOSER, setENABLE_PROPOSER] = useState('');
-  const [L1_PROPOSER_PRIVATE_KEY, setL1_PROPOSER_PRIVATE_KEY] = useState('');
-  const [PROPOSE_BLOCK_TX_GAS_LIMIT, setPROPOSE_BLOCK_TX_GAS_LIMIT] = useState('');
-  const [BLOCK_PROPOSAL_FEE, setBLOCK_PROPOSAL_FEE] = useState('');
-  const api_endpoint ="https://node.tektorch.info"
   useEffect(() => {
     // Check local storage to see if the user has already logged in
     const isUserLoggedIn = localStorage.getItem('userLoggedIn');
@@ -46,116 +31,7 @@ const App: React.FC = () => {
   };
 
 
-  const handleContinue = () => {
-    setStep(step + 1);
-  };
-
-  const handleChangePassword = () => {
-    setLoading(true);
-    fetch(`${api_endpoint}/change-password`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        host: host,
-        username: username,
-        current_password: currentPassword,
-        new_password: newPassword
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data); // Handle response data
-        setLoading(false);
-        handleContinue(); // Move to next step
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setLoading(false);
-      });
-  };
-
-  const handleSetupEnvironment = () => {
-    setLoading(true);
-    // Assuming repo link is provided by the user
-    // const repoLink = https://github.com/Bitbaza-Org/taiko_node.git
-    fetch(`${api_endpoint}/ssh-command`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        host: host,
-        username: username,
-        password: newPassword,
-        command: 'apt install git -y && [ ! -d "taiko_node" ] && git clone https://github.com/Bitbaza-Org/taiko_node.git ; cd taiko_node && ./setup_env.sh'
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data); // Handle response data
-        setLoading(false);
-        handleContinue(); // Move to next step
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setLoading(false);
-      });
-  };
-
-  const handleSetupDashboard = () => {
-    setLoading(true);
-    fetch(`${api_endpoint}/ssh-command`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        host: host,
-        username: username,
-        password: newPassword,
-        command: 'cd taiko_node && ./setup_node_dashboard.sh'
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data); // Handle response data
-        setLoading(false);
-        handleContinue(); // Move to next step
-        setSuccessMessage('Node setup successfully');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setLoading(false);
-      });
-  };
-
-  const handleNodesetup=()=>{
-    setLoading(true);
-    fetch(`${api_endpoint}/ssh-command`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            host: host,
-            username: username,
-            password: newPassword,
-            command: `cd taiko_node && ./setup_node.sh ${L1_ENDPOINT_HTTP} ${L1_ENDPOINT_WS} ${ENABLE_PROPOSER} ${L1_PROPOSER_PRIVATE_KEY} ${PROPOSE_BLOCK_TX_GAS_LIMIT} ${BLOCK_PROPOSAL_FEE}`
-        })
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); // Handle response data
-            setLoading(false);
-            handleContinue(); // Move to next step
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            setLoading(false);
-        });
-  };
+ 
 
   return (
     <ChakraProvider>
@@ -178,6 +54,7 @@ const App: React.FC = () => {
             </HStack>
           </HStack>
         </Box>
+        
               {/* {loggedIn ? ( */}
               <Tabs>
   <TabList>
