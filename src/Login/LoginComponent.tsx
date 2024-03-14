@@ -31,10 +31,11 @@ function LoginComponent() {
         const privateKeyProvider = new EthereumPrivateKeyProvider({ config: { chainConfig } });
 
         const web3auth = new Web3AuthNoModal({
-          clientId, // get from https://dashboard.web3auth.io
-          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_MAINNET,
+          clientId :"BP_vYOMN--pogDqBiyO30wS7QijQr9_STFuQVhVf6CAhm5BMGkjrR4dX7CAbxpuSf64TIBes_DARD3y9NLxQHkU",
+          web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
           privateKeyProvider,
         });
+        console.log(web3auth);
 
         const openloginAdapter = new OpenloginAdapter({});
         web3auth.configureAdapter(openloginAdapter);
@@ -239,4 +240,4 @@ function LoginComponent() {
   );
 }
 
-export default LoginComponent;
+export default LoginComponent
