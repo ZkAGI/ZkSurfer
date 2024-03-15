@@ -1,4 +1,4 @@
-import { autosurf_ELEMENT_SELECTOR } from '../constants';
+import { ZkSurf_ELEMENT_SELECTOR } from '../constants';
 import { useAppState } from '../state/store';
 import { callRPC } from './pageRPC';
 import { scrollScriptString } from './runtimeFunctionStrings';
@@ -15,7 +15,7 @@ async function getObjectId(originalId: number) {
   const document = (await sendCommand('DOM.getDocument')) as any;
   const { nodeId } = (await sendCommand('DOM.querySelector', {
     nodeId: document.root.nodeId,
-    selector: `[${autosurf_ELEMENT_SELECTOR}="${uniqueId}"]`,
+    selector: `[${ZkSurf_ELEMENT_SELECTOR}="${uniqueId}"]`,
   })) as any;
   if (!nodeId) {
     throw new Error('Could not find node');
