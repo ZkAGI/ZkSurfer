@@ -34,11 +34,11 @@ export const availableActions = [
           type: 'string',
         },
         {
-          name: 'L1_ENDPOINT_HTTP',
+          name: 'http_endpoint',
           type: 'string',
         },
         {
-          name: 'L1_ENDPOINT_WS',
+          name: 'ws_endpoint',
           type: 'string',
         },
         // {
@@ -46,15 +46,15 @@ export const availableActions = [
         //   type: 'boolean',
         // },
         {
-          name: 'L1_PROPOSER_PRIVATE_KEY',
+          name: 'private_key',
           type: 'string',
         },
         {
-          name: 'PROPOSE_BLOCK_TX_GAS_LIMIT',
+          name: 'gas_limit',
           type: 'number',
         },
         {
-          name: 'BLOCK_PROPOSAL_FEE',
+          name: 'block_fee',
           type: 'number',
         },
       ],
@@ -80,8 +80,52 @@ export const availableActions = [
           type: 'string',
         },
       ],
+    },{
+      name: 'dmTelegramMembers',
+      description: 'Direct message to Telegram members',
+      args: [
+        {
+          name: 'msg',
+          type: 'string',
+        },
+        {
+          name: 'csv_file',
+          type: 'File',
+        },
+      ],
     },
-    
+    {
+      name: 'scrapeMembers',
+      description: 'Scrapes members of a group',
+      args: [
+        {
+          name: 'groupName',
+          type: 'string',
+        },
+      ],
+    },{
+      name: 'sendEmail',
+      description: 'Sends an email with attachments',
+      args: [
+        {
+          name: 'user_id',
+          type: 'string',
+        },
+        {
+          name: 'user_pass',
+          type: 'string',
+        },
+        {
+          name: 'subject',
+          type: 'string',
+        },
+        {
+          name: 'msg',
+          type: 'string',
+        },
+        
+      ],
+    }      
   ] as const;
   
   type AvailableAction = (typeof availableActions)[number];

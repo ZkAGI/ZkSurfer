@@ -1,5 +1,3 @@
-import { Groq } from 'groq-sdk';
-
 import { useAppState } from '../state/store';
 import { availableActions } from './availableActions';
 import { ParsedResponseSuccess } from './parseResponse';
@@ -15,13 +13,20 @@ const formattedActions = availableActions
 
 
 const systemMessage = `
-  You are an AI assistant. 
-  You can use the following tool only if needed
-  ${formattedActions}
+You are a browser automation assistant.
 
-  IF user asks to create a taiko node first suggest them to change password of there taiko node and then setup taiko environment and then setup dashboard
-  You should generate small responses so that it should be conversational
-  You should return response in this format when you got all details and once user confirms to perform that action with that details <Action>taikoNodeEnvironmentSetup('<host>','<username>','<password>')</Action> only if the user gives all params for action
+You can use the following tools:
+
+${formattedActions}
+
+You will be given a task to perform and the current state of the DOM. You will also receive previous actions. You may retry a failed action up to once.
+
+This is an example of an action:
+
+<Thought>I should click the add to cart button</Thought>
+<Action>click(223)</Action>
+
+Always include the <Thought> and <Action> open/close tags, or your response will be marked as invalid.
 `;
 
 export async function determineNextAction(
@@ -31,44 +36,44 @@ export async function determineNextAction(
   maxAttempts = 3,
   notifyError?: (error: string) => void
 ) {
-  const model = useAppState.getState().settings.selectedModel;
+  // const model = useAppState.getState().settings.selectedModel;
   const prompt = formatPrompt(taskInstructions, previousActions, simplifiedDOM);
-  const key = "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"
-  if (!key) {
-    notifyError?.('No Groq key found');
-    return null;
-  }
-  const groq = new Groq({
-    apiKey: key,
-    dangerouslyAllowBrowser: true
-});
+  const max_tokens= 500
+  const temperature= 0
+  const stop= ['</Action>']
   const maxSystemMessageLength = 3000; // Choose a reasonable length for the system message
   const truncatedSystemMessage = systemMessage.substring(0, maxSystemMessageLength);
 
   for (let i = 0; i < maxAttempts; i++) {
     try {
+      const model="mistral"
       const messages = [
+        { role: 'user', content: prompt },
         {
-          role: 'system',
+          role: 'assistant',
           content: truncatedSystemMessage,
         },
-        { role: 'user', content: prompt },
       ];
   
-      const query = await groq.chat.completions.create({
-        model: "mixtral-8x7b-32768",
-        messages: messages,
-        max_tokens: 500,
-        temperature: 0,
-        stop: ['</Action>'],
-      });
-  
-      // const response = await query.fetch(key);
-  
+      const apiEndpoint = 'http://164.52.213.234:5000/v1/chat/completions'; // Replace with your own API endpoint
+      console.log(JSON.stringify({model,messages,temperature,max_tokens,stop}))
+
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          "x-api-key": "fa6c49ffa6f0e925b8b87795122109c1",
+          'Content-Type': 'application/json',},
+          body: JSON.stringify({ messages }),
+      }
+      );
+      // const response = await fetch(apiEndpoint, requestOptions as RequestInit);
+
+      const data = await response.json();
+      console.log(data)
       return {
         prompt,
         response:
-          query.choices[0].message?.content?.trim() + '</Action>',
+          data.choices[0].message?.content?.trim() + '</Action>',
       };
     } catch (error: any) {
       console.log('determineNextAction error', error);

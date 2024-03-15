@@ -6,33 +6,44 @@ import SetAPIKey from './SetAPIKey';
 import TaskUI from './TaskUI';
 import OptionsDropdown from './OptionsDropdown';
 import logo from '../assets/img/icon-128.png';
-import FormComponent from '../pages/Popup/FormComponent'; // Import the FormComponent
 import ChatUI from './ChatUI';
 import LoginComponent from '../Login/LoginComponent';
 
 const App: React.FC = () => {
   const openAIKey = useAppState((state) => state.settings.openAIKey);
-  const [formSubmitted, setFormSubmitted] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
 
   useEffect(() => {
     // Check local storage to see if the user has already logged in
     const isUserLoggedIn = localStorage.getItem('userLoggedIn');
-    if (isUserLoggedIn) {
+    if (isUserLoggedIn==='true') {
+      console.log(isUserLoggedIn)
       setLoggedIn(true);
     }else{
       setLoggedIn(false)
     }
   }, []);
-
-  const handleFormSubmit = () => {
-    // Set the flag in local storage indicating that the user has logged in
-    localStorage.setItem('userLoggedIn', 'true');
-    setFormSubmitted(true);
-    console.log('Form submitted:', formSubmitted);
+  
+  const handleLogout = () => {
+    localStorage.setItem('userLoggedIn', 'false');
+    setLoggedIn(false);
+  };
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setSelectedFile(file || null);
   };
 
+  const handleUpload = () => {
+    if (!selectedFile) {
+      alert('Please select a file.');
+      return;
+    }
 
+    // Call the parent component callback with the selected file and message
+    
+  };
  
 
   return (
@@ -50,6 +61,13 @@ const App: React.FC = () => {
             <Heading as="h1" size="lg" flex={1}>
               ZkSurf
             </Heading>
+            {loggedIn ?(
+            <Button
+      onClick={handleLogout}
+      colorScheme="red"
+    >
+      Logout
+    </Button>):NaN}
             <HStack spacing={2}>
               <ModelDropdown />
               <OptionsDropdown />

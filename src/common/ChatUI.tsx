@@ -1,14 +1,15 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { VStack, HStack, Textarea, useToast, Spacer } from '@chakra-ui/react';
+import { VStack, HStack, Textarea, useToast, Spacer, Button } from '@chakra-ui/react';
 import useChatStore, { ChatMessage } from '../state/chat';
-import RunChatButton from './RunChatButton'; // Import RunChatButton
-import ChatHistory from './ChatHistory'; // Assuming you have a component named ChatHistory
+import RunChatButton from './RunChatButton';
+import ChatHistory from './ChatHistory';
 import { debugMode } from '../constants';
 import TaskStatus from './TaskStatus';
 
 const ChatUI = () => {
   const [message, setMessage] = useState('');
-  const { history, addMessage, generateChat } = useChatStore(); // Destructure generateChat from useChatStore
+  const [file, setFile] = useState<File | null>(null);
+  const { history, addMessage, generateChat } = useChatStore();
   const toast = useToast();
 
   const toastError = useCallback(
@@ -35,8 +36,9 @@ const ChatUI = () => {
     };
 
     addMessage(newMessage);
-    generateChat(message.trim()); // Call generateChat with the user message
+    generateChat(message.trim(), file);
     setMessage('');
+    setFile(null);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -46,7 +48,12 @@ const ChatUI = () => {
     }
   };
 
-  // Use useEffect to auto-scroll to the bottom of the chat history when a new message is added
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
+  };
+
   useEffect(() => {
     const chatHistoryElement = document.getElementById('chat-history');
     if (chatHistoryElement) {
@@ -56,7 +63,7 @@ const ChatUI = () => {
 
   return (
     <>
-      <ChatHistory messages={history} /> {/* Pass history as messages to ChatHistory */}
+      <ChatHistory messages={history} />
       <Textarea
         autoFocus
         placeholder="Type your message here..."
@@ -66,7 +73,18 @@ const ChatUI = () => {
         mb={2}
         onKeyDown={onKeyDown}
       />
-      <HStack>
+      <label htmlFor="file-upload">
+        <Button as="span" colorScheme="blue">
+          Attach File
+        </Button>
+      </label>
+      <input
+        id="file-upload"
+        type="file"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
+      <HStack mt={2}>
         <RunChatButton sendMessage={handleSendMessage} />
         <Spacer />
         {debugMode && <TaskStatus />}

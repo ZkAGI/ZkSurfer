@@ -228,7 +228,6 @@ function LoginComponent() {
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
-     
     </div>
   );
 }
