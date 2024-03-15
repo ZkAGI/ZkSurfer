@@ -228,15 +228,6 @@ function LoginComponent() {
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
 
-      <footer className="footer">
-        <a
-          href="https://github.com/Web3Auth/web3auth-pnp-examples/tree/main/web-no-modal-sdk/chrome-extension-no-modal-example"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Source code
-        </a>
-      </footer>
     </div>
   );
 }
