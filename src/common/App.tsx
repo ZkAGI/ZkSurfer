@@ -59,7 +59,7 @@ const App: React.FC = () => {
               alt="logo"
             />
             <Heading as="h1" size="lg" flex={1}>
-              Autosurf
+              ZkSurf
             </Heading>
             {loggedIn ?(
             <Button
