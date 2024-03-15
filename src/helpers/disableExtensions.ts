@@ -1,5 +1,5 @@
-// These are extensions that are known to interfere with the operation of autosurf.
-// We'll turn them off temporarily while autosurf is performing actions.
+// These are extensions that are known to interfere with the operation of Zksurf.
+// We'll turn them off temporarily while ZkSurf is performing actions.
 const incompatibleExtensions = [
   // Dashlane
   'fdjamakpfbbddfjaooikfcpapjohcfmg',

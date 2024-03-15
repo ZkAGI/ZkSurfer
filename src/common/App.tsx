@@ -48,7 +48,7 @@ const App: React.FC = () => {
               alt="logo"
             />
             <Heading as="h1" size="lg" flex={1}>
-              Autosurf
+              ZkSurf
             </Heading>
             <HStack spacing={2}>
               <ModelDropdown />
