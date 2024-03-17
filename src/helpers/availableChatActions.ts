@@ -29,10 +29,10 @@ export const availableActions = [
           name: 'username',
           type: 'string',
         },
-        {
-          name: 'Password',
-          type: 'string',
-        },
+        // {
+        //   name: 'Password',
+        //   type: 'string',
+        // },
         {
           name: 'http_endpoint',
           type: 'string',
@@ -45,10 +45,10 @@ export const availableActions = [
         //   name: 'ENABLE_PROPOSER',
         //   type: 'boolean',
         // },
-        {
-          name: 'private_key',
-          type: 'string',
-        },
+        // {
+        //   name: 'private_key',
+        //   type: 'string',
+        // },
         {
           name: 'gas_limit',
           type: 'number',
@@ -70,15 +70,7 @@ export const availableActions = [
         {
           name: 'username',
           type: 'string',
-        },
-        {
-          name: 'currentPassword',
-          type: 'string',
-        },
-        {
-          name: 'newPassword',
-          type: 'string',
-        },
+        }
       ],
     },{
       name: 'dmTelegramMembers',
@@ -109,10 +101,6 @@ export const availableActions = [
       args: [
         {
           name: 'user_id',
-          type: 'string',
-        },
-        {
-          name: 'user_pass',
           type: 'string',
         },
         {

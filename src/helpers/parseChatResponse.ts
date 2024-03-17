@@ -84,7 +84,7 @@ export function parseResponse(text: string): ParsedResponse {
       const stringValue =
         (arg.startsWith('"') && arg.endsWith('"')) || (arg.startsWith("'") && arg.endsWith("'")) || (arg.startsWith("`") && arg.endsWith("`")) ? arg.slice(1, -1) : null;
 
-      if (stringValue === null) {
+      if (stringValue === null || stringValue.includes('<')||stringValue.includes('>')) {
         return {
           error: `Invalid argument type: Expected a string for argument "${expectedArg.name}", but got "${arg}".`,
         };

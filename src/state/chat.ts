@@ -17,15 +17,36 @@ export interface ChatState {
   history: ChatMessage[];
   addMessage: (message: ChatMessage) => void;
   clearHistory: () => void;
-  generateChat: (file: File | null) => Promise<void>; // Modify generateChat to accept a file argument
+  generateChat: (
+    message: string,
+    file: File | null,
+    userPass: string,
+    currentPassword: string, // New state variable for current password
+    newPassword: string, // New state variable for new password
+    password: string, // New state variable for password
+    privateKey: string // New state variable for private key
+  ) => Promise<void>;
+  showPasswordModal: boolean;
+  setShowPasswordModal: (show: boolean) => void;
+  showUpdatePasswordModal: boolean; // New state variable for Update Password modal
+  setShowUpdatePasswordModal: (show: boolean) => void; // Function to toggle Update Password modal
+  showCredentialsModal: boolean; // New state variable for Credentials modal
+  setShowCredentialsModal: (show: boolean) => void; // Function to toggle Credentials modal
 }
 
 const useChatStore = create<ChatState>((set) => ({
   history: [],
+  showPasswordModal: false,
+  setShowPasswordModal: (show) => set({ showPasswordModal: show }),
+  showUpdatePasswordModal: false, // Initialize Update Password modal state
+  setShowUpdatePasswordModal: (show) => set({ showUpdatePasswordModal: show }), // Function to toggle Update Password modal
+  showCredentialsModal: false, // Initialize Credentials modal state
+  setShowCredentialsModal: (show) => set({ showCredentialsModal: show }), // Function to toggle Credentials modal
+
   addMessage: (message) =>
-    set((state) => ({ history: [...state.history, message] })),
+    set((state) => ({ ...state, history: [...state.history, message] })),
   clearHistory: () => set({ history: [] }),
-  generateChat: async (file) => { // Accept file as an argument
+  generateChat: async (message, file, userPass, currentPassword, newPassword, password, privateKey) => { // Modify generateChat function signature
     try {
       const lastUserMessage = getLastUserMessage(useChatStore.getState().history);
       if (!lastUserMessage) {
@@ -33,20 +54,22 @@ const useChatStore = create<ChatState>((set) => ({
         return;
       }
       
-      const chatResponse = await determineNextChat(lastUserMessage.content);
+      const chatResponse = await determineNextChat(message);
       if (chatResponse) {
         const { response } = chatResponse;
         
-        // Remove the <Action> tag from the response
-        const contentWithoutActionTag = response.replace(/<Action>(.*?)<\/Action>/g, '');
+        let contentWithoutActionTag = response.replace(/<Action>(.*?)<\/Action>/g, '');
+        if (contentWithoutActionTag.length === 0) {
+          contentWithoutActionTag = 'Please provide more details';
+        }
         
         const newMessage: ChatMessage = {
           id: Date.now(),
           sender: 'AI assistant',
-          content: contentWithoutActionTag, // Use modified content without <Action> tag
+          content: contentWithoutActionTag,
           timestamp: Date.now(),
         };
-        set((state) => ({ history: [...state.history, newMessage] }));
+        set((state) => ({ ...state, history: [...state.history, newMessage] }));
         
         const parsedResponse = parseResponse(response);
         if ('error' in parsedResponse) {
@@ -55,59 +78,102 @@ const useChatStore = create<ChatState>((set) => ({
         }
         
         const { action, parsedAction } = parsedResponse as ParsedResponseSuccess;
-        if (Array.isArray(parsedAction.args) && parsedAction.args.some(arg => arg.includes('<') && arg.includes('>'))) {
-          console.log("No function call")
-        } else {
-          // Perform action if specified
+          // const newMessage: ChatMessage = {
+          //   id: Date.now(),
+          //   sender: 'AI assistant',
+          //   content: 'Please provide the required details if you Dont know what details to send Please ask me by defining the task and ask details related to it.',
+          //   timestamp: Date.now(),
+          // };
+          // set((state) => ({ ...state, history: [...state.history, newMessage] }));
+          // console.log("No function call")
+          const waitForDetails = async (variable: any) => {
+            while (!variable) {
+              // Do nothing and keep looping until the variable is provided
+              await new Promise(resolve => setTimeout(resolve, 100)); // Wait for 100 milliseconds before checking again
+            }
+          };
+          
           if (parsedAction.name === 'TaikoNodeEnvironmentSetup') {
-            // Here, you need to provide the required parameters for taikoNodeCreation
-            await taikoNodeEnvironmentSetup({host:parsedAction.args.host,username:parsedAction.args.username,password:parsedAction.args.Password});
+            set((state) => ({ ...state, showCredentialsModal: true })); // Show the Credentials modal
+            await waitForDetails(password)
+            await waitForDetails(privateKey)
+            await taikoNodeEnvironmentSetup({ host: parsedAction.args.host, username: parsedAction.args.username, password: password }); // Pass password from state
+            set((state) => ({ ...state, showCredentialsModal: false })); // Hide the Credentials modal
           }
-          if(parsedAction.name==="TaikoNodeDashboardSetup"){
+          if (parsedAction.name === "TaikoNodeDashboardSetup") {
             await taikoNodeAndDashboardSetup({
               host: parsedAction.args.host,
               username: parsedAction.args.username,
-              password: parsedAction.args.Password,
+              password: password,
               L1_ENDPOINT_HTTP: parsedAction.args.http_endpoint,
-              L1_ENDPOINT_WS: parsedAction.args.ws_endpoint, 
-              // ENABLE_PROPOSER: parsedAction.args.ENABLE_PROPOSER === 'True' , // Convert to boolean
-              L1_PROPOSER_PRIVATE_KEY: parsedAction.args.private_key,
+              L1_ENDPOINT_WS: parsedAction.args.ws_endpoint,
+              L1_PROPOSER_PRIVATE_KEY: privateKey,
               PROPOSE_BLOCK_TX_GAS_LIMIT: parsedAction.args.gas_limit,
               BLOCK_PROPOSAL_FEE: parsedAction.args.block_fee
             });
           }
-          if(parsedAction.name==="ChangeNodePassword"){
-            await changeNodePassword({
+          if (parsedAction.name === "ChangeNodePassword") {
+            set((state) => ({ ...state, showUpdatePasswordModal: true })); // Show the Update Password modal
+            await waitForDetails(currentPassword); 
+
+            const res = await changeNodePassword({
               host: parsedAction.args.host,
               username: parsedAction.args.username,
-              currentPassword: parsedAction.args.currentPassword,
-              newPassword: parsedAction.args.newPassword
+              currentPassword: currentPassword, // Pass current password from state
+              newPassword: newPassword, // Pass new password from state
             });
+            set((state) => ({ ...state, showUpdatePasswordModal: false })); // Hide the Update Password modal
+            const newMessage: ChatMessage = {
+              id: Date.now(),
+              sender: 'AI assistant',
+              content: res,
+              timestamp: Date.now(),
+            };
+            set((state) => ({ ...state, history: [...state.history, newMessage] }));
           }
           if (parsedAction.name === "sendEmail") {
-            // Access the file passed from generateChat function
+            if(!password || !file){
+
+              set((state) => ({ ...state, showPasswordModal: true }));
+              await waitForDetails(userPass);
+            }
             const csv_file = file;
             if (!csv_file) {
+              const newMessage: ChatMessage = {
+                id: Date.now(),
+                sender: 'AI assistant',
+                content: "Please attach the csv file with Email field, then type 'Confirm Action'",
+                timestamp: Date.now(),
+              };
+              set((state) => ({ ...state, history: [...state.history, newMessage] }));
               console.error('No file attached.');
               return;
             }
+            await waitForDetails(csv_file); // Wait until csv_file is provided
 
-            await sendEmail({
+
+            const res=await sendEmail({
               user_id: parsedAction.args.user_id,
-              user_pass: parsedAction.args.user_pass,
               subject: parsedAction.args.subject,
+              user_pass: userPass,
               msg: parsedAction.args.msg,
               csv_file: csv_file
             });
+            set((state) => ({ ...state, showPasswordModal: false }));
+            const newMessage: ChatMessage = {
+              id: Date.now(),
+              sender: 'AI assistant',
+              content: res,
+              timestamp: Date.now(),
+            };
+            set((state) => ({ ...state, history: [...state.history, newMessage] }));
           }
-        }
+        
       } else {
         console.error('No chat response received.');
-        // Handle null response here, e.g., display error message to user
       }
     } catch (error) {
       console.error('Error generating chat:', error);
-      // Handle error here, e.g., display error message to user
     }
   },
 }));
