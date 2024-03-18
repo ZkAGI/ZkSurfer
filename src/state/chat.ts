@@ -94,14 +94,23 @@ const useChatStore = create<ChatState>((set) => ({
           };
           
           if (parsedAction.name === 'TaikoNodeEnvironmentSetup') {
-            set((state) => ({ ...state, showCredentialsModal: true })); // Show the Credentials modal
-            await waitForDetails(password)
-            await waitForDetails(privateKey)
-            await taikoNodeEnvironmentSetup({ host: parsedAction.args.host, username: parsedAction.args.username, password: password }); // Pass password from state
+            if(!password || !privateKey){
+
+              set((state) => ({ ...state, showCredentialsModal: true })); // Show the Credentials modal
+              await waitForDetails(password)
+            }
+            const res=await taikoNodeEnvironmentSetup({ host: parsedAction.args.host, username: parsedAction.args.username, password: password }); // Pass password from state
             set((state) => ({ ...state, showCredentialsModal: false })); // Hide the Credentials modal
+            const newMessage: ChatMessage = {
+              id: Date.now(),
+              sender: 'AI assistant',
+              content: res,
+              timestamp: Date.now(),
+            };
+            set((state) => ({ ...state, history: [...state.history, newMessage] }));
           }
           if (parsedAction.name === "TaikoNodeDashboardSetup") {
-            await taikoNodeAndDashboardSetup({
+            const res=await taikoNodeAndDashboardSetup({
               host: parsedAction.args.host,
               username: parsedAction.args.username,
               password: password,
@@ -111,10 +120,21 @@ const useChatStore = create<ChatState>((set) => ({
               PROPOSE_BLOCK_TX_GAS_LIMIT: parsedAction.args.gas_limit,
               BLOCK_PROPOSAL_FEE: parsedAction.args.block_fee
             });
+            const newMessage: ChatMessage = {
+              id: Date.now(),
+              sender: 'AI assistant',
+              content: res,
+              timestamp: Date.now(),
+            };
+            set((state) => ({ ...state, history: [...state.history, newMessage] }));
           }
           if (parsedAction.name === "ChangeNodePassword") {
-            set((state) => ({ ...state, showUpdatePasswordModal: true })); // Show the Update Password modal
-            await waitForDetails(currentPassword); 
+            if(!currentPassword || !newPassword){
+
+              set((state) => ({ ...state, showUpdatePasswordModal: true })); // Show the Update Password modal
+              await waitForDetails(currentPassword); 
+              // await waitForDetails(newPassword)
+            }
 
             const res = await changeNodePassword({
               host: parsedAction.args.host,

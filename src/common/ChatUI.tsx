@@ -15,14 +15,14 @@ const ChatUI = () => {
   const [userPass, setUserPass] = useState('');
   const [fileName, setFileName] = useState<string>('');
   const [isFileAttached, setIsFileAttached] = useState<boolean>(false); // Track if file is attached
-  const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState<boolean>(false); // State to control Update Password modal
-  const [showCredentialsModal, setShowCredentialsModal] = useState<boolean>(false); // State to control Credentials modal
+  // const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState<boolean>(false); // State to control Update Password modal
+  // const [showCredentialsModal, setShowCredentialsModal] = useState<boolean>(false); // State to control Credentials modal
   const [currentPassword, setCurrentPassword] = useState<string>(''); // State to store current password
   const [newPassword, setNewPassword] = useState<string>(''); // State to store new password
   const [password, setPassword] = useState<string>(''); // State to store password
   const [privateKey, setPrivateKey] = useState<string>(''); // State to store private key
 
-  const { history, addMessage, generateChat, showPasswordModal, setShowPasswordModal } = useChatStore();
+  const { history, addMessage, generateChat, showPasswordModal, setShowPasswordModal,showCredentialsModal,setShowCredentialsModal,showUpdatePasswordModal,setShowUpdatePasswordModal } = useChatStore();
   const toast = useToast();
 
   useEffect(() => {

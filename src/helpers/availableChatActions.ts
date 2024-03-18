@@ -11,10 +11,10 @@ export const availableActions = [
           name: 'username',
           type: 'string',
         },
-        {
-          name: 'Password',
-          type: 'string',
-        },
+        // {
+        //   name: 'Password',
+        //   type: 'string',
+        // },
       ],
     },
     {
