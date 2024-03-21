@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "AutoSurf",
+  "name": "ZkSurf",
   "description": "A chrome extension that executes DOM actions to fulfill natural language commands on any website",
   "version": "1.1.0",
   "options_page": "options.html",
@@ -11,7 +11,9 @@
     "storage",
     "clipboardWrite",
     "debugger",
-    "management"
+    "management",
+    "identity",
+    "https://cubesigner-backend-production.up.railway.app/"
   ],
   "host_permissions": [
     "https://accounts.google.com/",
@@ -27,6 +29,7 @@
   },
   "icons": {
     "128": "icon-128.png"
+    
   },
   "content_scripts": [
     {
@@ -35,6 +38,11 @@
       "css": ["content.styles.css"]
     }
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'",
+    "sandbox": "sandbox allow-scripts"
+  },
+
   "devtools_page": "devtools.html",
   "web_accessible_resources": [
     {

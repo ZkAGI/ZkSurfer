@@ -1,4 +1,4 @@
-import { autosurf_ELEMENT_SELECTOR } from '../../constants';
+import { ZkSurf_ELEMENT_SELECTOR } from '../../constants';
 
 function isInteractive(
   element: HTMLElement,
@@ -77,9 +77,9 @@ export default function getAnnotatedDOM() {
 export function getUniqueElementSelectorId(id: number): string {
   const element = currentElements[id];
   // element may already have a unique id
-  let uniqueId = element.getAttribute(autosurf_ELEMENT_SELECTOR);
+  let uniqueId = element.getAttribute(ZkSurf_ELEMENT_SELECTOR);
   if (uniqueId) return uniqueId;
   uniqueId = Math.random().toString(36).substring(2, 10);
-  element.setAttribute(autosurf_ELEMENT_SELECTOR, uniqueId);
+  element.setAttribute(ZkSurf_ELEMENT_SELECTOR, uniqueId);
   return uniqueId;
 }

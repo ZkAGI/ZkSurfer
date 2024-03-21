@@ -11,6 +11,7 @@ const formattedActions = availableActions
   })
   .join('\n');
 
+
 const systemMessage = `
 You are a browser automation assistant.
 
@@ -35,45 +36,49 @@ export async function determineNextAction(
   maxAttempts = 3,
   notifyError?: (error: string) => void
 ) {
-  const model = useAppState.getState().settings.selectedModel;
+  // const model = useAppState.getState().settings.selectedModel;
   const prompt = formatPrompt(taskInstructions, previousActions, simplifiedDOM);
-
-  const apiEndpoint = 'https://leo.tektorch.info/chat/completions'; // Replace with your own API endpoint
-
+  const max_tokens= 500
+  const temperature= 0
+  const stop= ['</Action>']
   const maxSystemMessageLength = 3000; // Choose a reasonable length for the system message
   const truncatedSystemMessage = systemMessage.substring(0, maxSystemMessageLength);
 
   for (let i = 0; i < maxAttempts; i++) {
     try {
+      const model="mistral"
       const messages = [
+        { role: 'user', content: prompt },
         {
-          role: "user",
-          content: prompt+" "+truncatedSystemMessage
-        }
-      ]
-      console.log(JSON.stringify({ messages }))
+          role: 'assistant',
+          content: truncatedSystemMessage,
+        },
+      ];
+  
+      const apiEndpoint = 'http://164.52.213.234:5000/v1/chat/completions'; // Replace with your own API endpoint
+      console.log(JSON.stringify({model,messages,temperature,max_tokens,stop}))
 
       const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ messages }),
+          "x-api-key": "fa6c49ffa6f0e925b8b87795122109c1",
+          'Content-Type': 'application/json',},
+          body: JSON.stringify({ messages }),
       }
       );
+      // const response = await fetch(apiEndpoint, requestOptions as RequestInit);
 
       const data = await response.json();
-      console.log(data[0].content);
-
+      console.log(data)
       return {
-        usage: data.usage, // Replace with your own API response format
         prompt,
-        response: data[0].content, // Replace with your own API response format
+        response:
+          data.choices[0].message?.content?.trim() + '</Action>',
       };
     } catch (error: any) {
       console.log('determineNextAction error', error);
       if (error.response.data.error.message.includes('server error')) {
-        // Problem with the API, try again
+        // Problem with the Groq API, try again
         if (notifyError) {
           notifyError(error.response.data.error.message);
         }
@@ -100,7 +105,8 @@ export function formatPrompt(
     const serializedActions = previousActions
       .map(
         (action) =>
-          `<Thought>${action.thought}</Thought>\n<Action>${action.action}</Action>`
+          // `<Thought>${action.thought}</Thought>\n<Action>${action.action}</Action>`
+          `<Action>${action.action}</Action>`
       )
       .join('\n\n');
     previousActionsString = `You have already taken the following actions: \n${serializedActions}\n\n`;
