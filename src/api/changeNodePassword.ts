@@ -8,7 +8,12 @@ export const changeNodePassword = async (params: {
 }): Promise<string> => {
   try {
     const { host, username, currentPassword, newPassword } = params;
-
+    console.log(JSON.stringify({
+      host: host,
+      username: username,
+      current_password: currentPassword,
+      new_password: newPassword
+    }))
     // Make a POST request to change the password
     const response = await fetch(`${api_endpoint}/change-password`, {
       method: 'POST',

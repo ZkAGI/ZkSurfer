@@ -18,14 +18,14 @@ const App: React.FC = () => {
   useEffect(() => {
     // Check local storage to see if the user has already logged in
     const isUserLoggedIn = localStorage.getItem('userLoggedIn');
-    if (isUserLoggedIn==='true') {
+    if (isUserLoggedIn === 'true') {
       console.log(isUserLoggedIn)
       setLoggedIn(true);
-    }else{
+    } else {
       setLoggedIn(false)
     }
   }, []);
-  
+
   const handleLogout = () => {
     localStorage.setItem('userLoggedIn', 'false');
     setLoggedIn(false);
@@ -42,9 +42,9 @@ const App: React.FC = () => {
     }
 
     // Call the parent component callback with the selected file and message
-    
+
   };
- 
+
 
   return (
     <ChakraProvider>
@@ -61,40 +61,40 @@ const App: React.FC = () => {
             <Heading as="h1" size="lg" flex={1}>
               ZkSurf
             </Heading>
-            {loggedIn ?(
+            {/* {loggedIn ?(
             <Button
       onClick={handleLogout}
       colorScheme="red"
     >
       Logout
-    </Button>):NaN}
+    </Button>):NaN} */}
             <HStack spacing={2}>
               <ModelDropdown />
               <OptionsDropdown />
             </HStack>
           </HStack>
         </Box>
-        
-              {loggedIn ? (
-              <Tabs>
-  <TabList>
-    <Tab>Browser Automation</Tab>
-    <Tab>Chat</Tab>
-  </TabList>
-  <TabPanels>
-    <TabPanel>
-      <AppUI />
-    </TabPanel>
-   
-    <TabPanel>
-      <ChatUI/>
-    </TabPanel>
-  </TabPanels>
-</Tabs>
 
-) : (
+        {/* {loggedIn ? ( */}
+        <Tabs>
+          <TabList>
+            <Tab>Browser Automation</Tab>
+            <Tab>Chat</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <AppUI />
+            </TabPanel>
+
+            <TabPanel>
+              <ChatUI />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+
+        {/* ) : (
   <LoginComponent />
-)}
+)} */}
 
       </Box>
     </ChakraProvider>

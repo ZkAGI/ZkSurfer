@@ -1,7 +1,7 @@
 // api.ts
-const API_ENDPOINT = "http://43.205.198.30:80/scrape_telegram_member";
+const API_ENDPOINT = "https://autosurf.tektorch.info/scrape_telegram_member";
 
-export async function scrapeMembers(apiKey: string, apiHash: string, phoneNumber: string, groupName: string): Promise<void> {
+export async function scrapeMembers(apiKey: string, apiHash: string, phoneNumber: string, groupName: string): Promise<string> {
   const formData = new FormData();
   formData.append('group_name', groupName);
   formData.append('api_id', apiKey);
@@ -27,6 +27,7 @@ export async function scrapeMembers(apiKey: string, apiHash: string, phoneNumber
     a.click();
     a.remove();
     console.log('CSV file downloaded successfully.');
+    return 'CSV file downloaded successfully.';
   } catch (error) {
     console.error('Error occurred while fetching data:', error);
     throw error; // Propagate the error to the caller
