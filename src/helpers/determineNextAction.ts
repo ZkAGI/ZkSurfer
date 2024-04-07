@@ -46,24 +46,24 @@ export async function determineNextAction(
 
   for (let i = 0; i < maxAttempts; i++) {
     try {
-      const model="mistral"
+      const model="hermes-2-pro-mistral"
       const messages = [
-        { role: 'user', content: prompt },
         {
-          role: 'assistant',
+          role: 'system',
           content: truncatedSystemMessage,
         },
+        { role: 'user', content: prompt },
       ];
   
-      const apiEndpoint = 'http://164.52.213.234:5000/v1/chat/completions'; // Replace with your own API endpoint
+      const apiEndpoint = 'http://164.52.213.234:8080/v1/chat/completions'; // Replace with your own API endpoint
       console.log(JSON.stringify({model,messages,temperature,max_tokens,stop}))
 
       const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
-          "x-api-key": "fa6c49ffa6f0e925b8b87795122109c1",
+          // "x-api-key": "fa6c49ffa6f0e925b8b87795122109c1",
           'Content-Type': 'application/json',},
-          body: JSON.stringify({ messages }),
+          body: JSON.stringify({ model,messages,temperature,max_tokens,stop }),
       }
       );
       // const response = await fetch(apiEndpoint, requestOptions as RequestInit);

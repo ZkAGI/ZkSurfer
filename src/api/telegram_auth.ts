@@ -1,8 +1,8 @@
 // api.ts
-const API_REQ_ENDPOINT = "http://43.205.198.30:80/request_otp";
-const API_CODE_ENDPOINT = "http://43.205.198.30:80/authenticate_with_otp";
+const API_REQ_ENDPOINT = "https://autosurf.tektorch.info/request_otp";
+const API_CODE_ENDPOINT = "https://autosurf.tektorch.info/authenticate_with_otp";
 
-export async function requestCode(api_id: string, api_hash: string, phone: string): Promise<void> {
+export async function requestCode(api_id: string, api_hash: string, phone: string): Promise<string> {
   const formData = new FormData();
   formData.append('api_id', api_id);
   formData.append('api_hash', api_hash);
@@ -19,6 +19,10 @@ export async function requestCode(api_id: string, api_hash: string, phone: strin
         const data = await response.json();
         console.log(data); // Handle response from FastAPI
         console.log("otp sent successfully!"); // Call function to display success message
+        localStorage.setItem('telegramApiKey', api_id);
+      localStorage.setItem('telegramApiHash', api_hash);
+
+        return "otp sent successfully!"; // Call function to display success message
       } else {
         throw new Error('Network response was not ok.');
       }
@@ -28,7 +32,7 @@ export async function requestCode(api_id: string, api_hash: string, phone: strin
   }
 }
 
-export async function authenticateCode(phone: string,code:string): Promise<void> {
+export async function authenticateCode(phone: string,code:string): Promise<string> {
     const formData = new FormData();
     formData.append('phone', phone);
     formData.append('code', code);
@@ -44,6 +48,11 @@ export async function authenticateCode(phone: string,code:string): Promise<void>
           const data = await response.json();
           console.log(data); // Handle response from FastAPI
           console.log("Authenticated successfully!"); // Call function to display success message
+
+          localStorage.setItem('telegramPhoneNumber', phone);
+          localStorage.setItem('telegramlogin', 'true');
+
+          return "Authenticated successfully!"; // Call function to display success message
         } else {
           throw new Error('Network response was not ok.');
         }

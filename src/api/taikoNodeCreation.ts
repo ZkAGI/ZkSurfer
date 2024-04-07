@@ -32,7 +32,8 @@ export const taikoNodeEnvironmentSetup = async (params: { host: string; username
 export const taikoNodeAndDashboardSetup = async (params: { host: string; username: string; password: string; L1_ENDPOINT_HTTP?: string; L1_ENDPOINT_WS?: string; L1_PROPOSER_PRIVATE_KEY?: string; PROPOSE_BLOCK_TX_GAS_LIMIT?: number; BLOCK_PROPOSAL_FEE?: number; }): Promise<string> => {
     try {
         const { host, username, password, ...otherParams } = params;
-        const command = `cd taiko_node && ./setup_node.sh ${otherParams.L1_ENDPOINT_HTTP} ${otherParams.L1_ENDPOINT_WS}  ${otherParams.L1_PROPOSER_PRIVATE_KEY} ${otherParams.PROPOSE_BLOCK_TX_GAS_LIMIT} ${otherParams.BLOCK_PROPOSAL_FEE} %% ./setup_dashboard`;
+        const enb="true"
+        const command = `cd taiko_node && ./setup_node.sh ${otherParams.L1_ENDPOINT_HTTP} ${otherParams.L1_ENDPOINT_WS} ${enb} ${otherParams.L1_PROPOSER_PRIVATE_KEY} ${otherParams.PROPOSE_BLOCK_TX_GAS_LIMIT} ${otherParams.BLOCK_PROPOSAL_FEE} %% ./setup_dashboard`;
 
         const response = await axios.post(`${api_endpoint}/ssh-command`, {
             host,
