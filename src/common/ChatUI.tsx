@@ -8,6 +8,8 @@ import TaskStatus from './TaskStatus';
 import PasswordComponent from './PasswordComponent';
 import UpdatePasswordComponent from './UpdatePasswordComponent';
 import CredentialsComponent from './CredentialsComponent';
+import FileUploadComponent from './FileUploadComponent';
+
 
 const ChatUI = () => {
   const [message, setMessage] = useState('');
@@ -22,7 +24,7 @@ const ChatUI = () => {
   const [password, setPassword] = useState<string>(''); // State to store password
   const [privateKey, setPrivateKey] = useState<string>(''); // State to store private key
 
-  const { history, addMessage, generateChat, showPasswordModal, setShowPasswordModal,showCredentialsModal,setShowCredentialsModal,showUpdatePasswordModal,setShowUpdatePasswordModal } = useChatStore();
+  const { history, addMessage, generateChat, showPasswordModal, setShowPasswordModal,showCredentialsModal,setShowCredentialsModal,showUpdatePasswordModal,setShowUpdatePasswordModal ,showFileUploadModal,setShowFileUploadModal,} = useChatStore();
   const toast = useToast();
 
   useEffect(() => {
@@ -144,6 +146,27 @@ const ChatUI = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      {/* File Upload Modal */}
+<Modal isOpen={showFileUploadModal} onClose={() => setShowFileUploadModal(false)}>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Upload File</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      <FileUploadComponent onFileSelect={(file) => {
+        setFile(file);
+        setFileName(file.name);
+        setIsFileAttached(true);
+        setShowFileUploadModal(false);
+      }} />
+    </ModalBody>
+    <ModalFooter>
+      <Button colorScheme="blue" onClick={() => setShowFileUploadModal(false)}>Close</Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+
       <ChatHistory messages={history} />
       <Textarea
         autoFocus

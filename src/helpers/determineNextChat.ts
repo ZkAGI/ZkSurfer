@@ -191,12 +191,8 @@ chat: |
                         "type": "string",
                         "description": "Message content to be sent"
                     },
-                    "csv_file": {
-                        "type": "File",
-                        "description": "CSV file containing members to be messaged"
-                    }
                 },
-                "required": ["msg", "csv_file"]
+                "required": ["msg"]
             }
         }
     },
@@ -241,7 +237,33 @@ chat: |
                 "required": ["user_id", "subject", "msg"]
             }
         }
-    }
+    },
+    {
+        "type": "function",
+        "function": {
+          "name": "getLeoCodeSolution",
+          "description": "Fetches the solution code for a given LeoCode query",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "The query to search for on the LeoCode API"
+              }
+            },
+            "required": ["query"]
+          },
+          "return": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "The solution code for the given query"
+              }
+            }
+          }
+        }
+      }
 ]
   
   You should ask user for parameters that are required to perform a task and keep it null it user has not entered it the default value should be null only`;

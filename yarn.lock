@@ -1961,20 +1961,6 @@
   resolved "https://registry.yarnpkg.com/@chakra-ui/visually-hidden/-/visually-hidden-2.2.0.tgz#9b0ecef8f01263ab808ba3bda7b36a0d91b4d5c1"
   integrity sha512-KmKDg01SrQ7VbTD3+cPWf/UfpF5MSwm3v7MWi0n5t8HnnadT13MF0MJCDSXbBWnzLv1ZKJ6zlyAOeARWX+DpjQ==
 
-"@cubist-labs/cubesigner-sdk-fs-storage@^0.3.25":
-  version "0.3.28"
-  resolved "https://registry.yarnpkg.com/@cubist-labs/cubesigner-sdk-fs-storage/-/cubesigner-sdk-fs-storage-0.3.28.tgz#f282b948f951a86e625c0add9274760983c779ce"
-  integrity sha512-+ZbpDmKdG8gprn9SQNXDSq12+M2R4i5t4StE7gJBD3YUuMl66UtYwHDBClkVf4sFDw7yb/Ev1HQKWI+sPYvukA==
-
-"@cubist-labs/cubesigner-sdk@^0.3.25":
-  version "0.3.28"
-  resolved "https://registry.yarnpkg.com/@cubist-labs/cubesigner-sdk/-/cubesigner-sdk-0.3.28.tgz#958648eaa1fe8d481ec8219f5cfd04f34a98ee59"
-  integrity sha512-cMPlU2pjktKeTofmQQ450T8iFr0E85ZyLz35MOjLH4ztHueEFwXLgtElBROyvB97PZEH7Bl22e0UKyMOIPp8sQ==
-  dependencies:
-    openapi-fetch "0.6.1"
-  optionalDependencies:
-    "@hpke/core" "^1.2.7"
-
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
@@ -2214,11 +2200,6 @@
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
-
-"@hpke/core@^1.2.7":
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/@hpke/core/-/core-1.2.7.tgz#f2720099373df55e1dfbc61a45917d36fed57509"
-  integrity sha512-wEbNmyZ2qtFSNnnhkZV/vJi7BnMKYDjQNxiaktJP68rfVTVcgRnsO6o4+59kzX2OrgEbEKWSp7mNSUJeJU5ncQ==
 
 "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"
@@ -9431,11 +9412,6 @@ openai@^4.29.0:
     node-fetch "^2.6.7"
     web-streams-polyfill "^3.2.1"
 
-openapi-fetch@0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/openapi-fetch/-/openapi-fetch-0.6.1.tgz#90d785ead213b82beb8f094a756ad9320ba28b32"
-  integrity sha512-CGWPqqtL31uC2e4eEU9NHoqYMXnJ7Jk4H/4Yguil4tO22MIZi91hlQJ/51E8CiaKdSTODh03yF4ndjIOABVHUw==
-
 optionator@^0.9.3:
   version "0.9.3"
   resolved "https://registry.yarnpkg.com/optionator/-/optionator-0.9.3.tgz#007397d44ed1872fdc6ed31360190f81814e2c64"
@@ -11091,6 +11067,7 @@ string-natural-compare@^3.0.1:
   integrity sha512-n3sPwynL1nwKi3WJ6AIsClwBMa0zTi54fn2oLU6ndfTSIO05xaznjSf15PcBZU6FNWbmN5Q6cxT4V5hGvB4taw==
 
 "string-width-cjs@npm:string-width@^4.2.0", "string-width@^1.0.2 || 2 || 3 || 4", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -11165,6 +11142,7 @@ string_decoder@~1.1.1:
     safe-buffer "~5.1.0"
 
 "strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  name strip-ansi-cjs
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -12324,6 +12302,7 @@ wordwrap@^1.0.0:
   integrity sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==

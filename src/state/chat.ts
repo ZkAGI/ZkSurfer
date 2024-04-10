@@ -7,6 +7,7 @@ import { sendEmail } from '../api/sendEmail';
 import { authenticateCode, requestCode } from '../api/telegram_auth';
 import { dmTelegramMembers } from '../api/dmtelegram';
 import { scrapeMembers } from '../api/scrapetelegram';
+import { LeofetchData } from '../api/leocode';
 
 export interface ChatMessage {
   id: number;
@@ -34,6 +35,8 @@ export interface ChatState {
   setShowUpdatePasswordModal: (show: boolean) => void;
   showCredentialsModal: boolean;
   setShowCredentialsModal: (show: boolean) => void;
+  showFileUploadModal: boolean;
+  setShowFileUploadModal: (show: boolean) => void;
 }
 
 const useChatStore = create<ChatState>((set) => ({
@@ -44,6 +47,8 @@ const useChatStore = create<ChatState>((set) => ({
   setShowUpdatePasswordModal: (show) => set({ showUpdatePasswordModal: show }),
   showCredentialsModal: false,
   setShowCredentialsModal: (show) => set({ showCredentialsModal: show }),
+  showFileUploadModal :false,
+  setShowFileUploadModal:(show) =>set({showFileUploadModal:show}),
 
   addMessage: (message) =>
     set((state) => ({ ...state, history: [...state.history, message] })),
@@ -100,15 +105,16 @@ const useChatStore = create<ChatState>((set) => ({
       const toolCallInfo = parseToolCallFromResponse(response);
       let contentWithoutActionTag = response.replace(/<tool_call>(.*?)<\/tool_call>/s, '');
         if (contentWithoutActionTag.length === 0) {
-          contentWithoutActionTag = 'Once given all details just say call tool with given details or if tool is called then wait for some time';
-        }
+          // contentWithoutActionTag = 'Once given all details just say call tool with given details or if tool is called then wait for some time';
+        }else{
         const newMessage: ChatMessage = {
           id: Date.now(),
           sender: 'AI assistant',
           content: contentWithoutActionTag,
           timestamp: Date.now(),
-        };
+            };
         set((state) => ({ ...state, history: [...state.history, newMessage] }));
+          }
         const waitForDetails = async (variable: any) => {
           while (!variable) {
             // Do nothing and keep looping until the variable is provided
@@ -246,8 +252,18 @@ const useChatStore = create<ChatState>((set) => ({
                 const apihash = localStorage.getItem('telegramApiHash') || '';
                 const phone = localStorage.getItem('telegramPhoneNumber') || '';
                 const csv_file = file;
-                if (!csv_file) { } else {
+                if (!csv_file) {
+                  set((state) => ({ ...state, showFileUploadModal: true }));
+
+                 } else {
                   const res = await dmTelegramMembers(apikey, apihash, phone, functionArguments.msg, csv_file)
+                  const newMessage: ChatMessage = {
+                    id: Date.now(),
+                    sender: 'AI assistant',
+                    content: "Messages Send Successfully",
+                    timestamp: Date.now(),
+                  };
+                  set((state) => ({ ...state, history: [...state.history, newMessage] }));
                 }
               } else {
                 const newMessage: ChatMessage = {
@@ -284,6 +300,16 @@ const useChatStore = create<ChatState>((set) => ({
                 };
                 set((state) => ({ ...state, history: [...state.history, newMessage] }));
               }
+            }
+            if(functionName==='getLeoCodeSolution'){
+              const res=await LeofetchData(functionArguments.query);
+              const newMessage: ChatMessage = {
+                id: Date.now(),
+                sender: 'AI assistant',
+                content: res,
+                timestamp: Date.now(),
+              };
+              set((state) => ({ ...state, history: [...state.history, newMessage] }));
             }
           }
         }
