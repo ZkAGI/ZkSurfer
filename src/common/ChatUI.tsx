@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import { VStack, HStack, Textarea, useToast, Spacer, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import useChatStore, { ChatMessage } from '../state/chat';
 import RunChatButton from './RunChatButton';
@@ -9,21 +9,23 @@ import PasswordComponent from './PasswordComponent';
 import UpdatePasswordComponent from './UpdatePasswordComponent';
 import CredentialsComponent from './CredentialsComponent';
 import FileUploadComponent from './FileUploadComponent';
+import { ModalContext } from '../context/ModalContext';
 
 
 const ChatUI = () => {
   const [message, setMessage] = useState('');
-  const [file, setFile] = useState<File | null>(null);
-  const [userPass, setUserPass] = useState('');
+  // const [file, setFile] = useState<File | null>(null);
+  // const [userPass, setUserPass] = useState('');
   const [fileName, setFileName] = useState<string>('');
   const [isFileAttached, setIsFileAttached] = useState<boolean>(false); // Track if file is attached
   // const [showUpdatePasswordModal, setShowUpdatePasswordModal] = useState<boolean>(false); // State to control Update Password modal
   // const [showCredentialsModal, setShowCredentialsModal] = useState<boolean>(false); // State to control Credentials modal
-  const [currentPassword, setCurrentPassword] = useState<string>(''); // State to store current password
-  const [newPassword, setNewPassword] = useState<string>(''); // State to store new password
-  const [password, setPassword] = useState<string>(''); // State to store password
-  const [privateKey, setPrivateKey] = useState<string>(''); // State to store private key
+  // const [currentPassword, setCurrentPassword] = useState<string>(''); // State to store current password
+  // const [newPassword, setNewPassword] = useState<string>(''); // State to store new password
+  // const [password, setPassword] = useState<string>(''); // State to store password
+  // const [privateKey, setPrivateKey] = useState<string>(''); // State to store private key
 
+  const { file, setFile, userPass, currentPassword, newPassword, password, privateKey } = useContext(ModalContext);
   const { history, addMessage, generateChat, showPasswordModal, setShowPasswordModal,showCredentialsModal,setShowCredentialsModal,showUpdatePasswordModal,setShowUpdatePasswordModal ,showFileUploadModal,setShowFileUploadModal,} = useChatStore();
   const toast = useToast();
 
@@ -49,6 +51,30 @@ const ChatUI = () => {
     },
     [toast]
   );
+
+  useEffect(() => {
+    if(password){
+      generateChat(message.trim(), file, userPass, currentPassword, newPassword, password, privateKey);
+    }
+  },[showCredentialsModal])
+
+  useEffect(() => {
+    if(currentPassword){
+      generateChat(message.trim(), file, userPass, currentPassword, newPassword, password, privateKey);
+    }
+  },[showUpdatePasswordModal])
+
+  useEffect(() => {
+    if(file){
+      generateChat(message.trim(), file, userPass, currentPassword, newPassword, password, privateKey);
+    }
+  },[showFileUploadModal])
+
+  useEffect(() => {
+    if(password){
+      generateChat(message.trim(), file, userPass, currentPassword, newPassword, password, privateKey);
+    }
+  },[showPasswordModal])
 
   const handleSendMessage = () => {
     if (message.trim() === '') return;
@@ -103,7 +129,9 @@ const ChatUI = () => {
           <ModalHeader>Enter Password</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <PasswordComponent onSubmit={setUserPass} onFileSelect={handleFileChange} />
+            <PasswordComponent 
+          // onSubmit={setUserPass} 
+            onFileSelect={handleFileChange} />
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" onClick={hidePasswordInput}>Submit</Button>
@@ -118,10 +146,12 @@ const ChatUI = () => {
           <ModalHeader>Update Password</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <UpdatePasswordComponent onSubmit={(currentPassword, newPassword) => {
-              setCurrentPassword(currentPassword);
-              setNewPassword(newPassword);
-            }} />
+            <UpdatePasswordComponent 
+            // onSubmit={(currentPassword, newPassword) => {
+            //   setCurrentPassword(currentPassword);
+            //   setNewPassword(newPassword);
+            // }} 
+            />
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" onClick={() => setShowUpdatePasswordModal(false)}>Close</Button>
@@ -136,10 +166,12 @@ const ChatUI = () => {
           <ModalHeader>Manage Credentials</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <CredentialsComponent onSubmit={(password, privateKey) => {
-              setPassword(password);
-              setPrivateKey(privateKey);
-            }} />
+            <CredentialsComponent 
+            // onSubmit={(password, privateKey) => {
+            //   setPassword(password);
+            //   setPrivateKey(privateKey);
+            // }} 
+            />
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" onClick={() => setShowCredentialsModal(false)}>Close</Button>
@@ -155,7 +187,7 @@ const ChatUI = () => {
     <ModalCloseButton />
     <ModalBody>
       <FileUploadComponent onFileSelect={(file) => {
-        setFile(file);
+        //setFile(file);
         setFileName(file.name);
         setIsFileAttached(true);
         setShowFileUploadModal(false);

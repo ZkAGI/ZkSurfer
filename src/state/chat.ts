@@ -62,6 +62,7 @@ const useChatStore = create<ChatState>((set) => ({
     password,
     privateKey
   ) => {
+
     try {
       const lastUserMessage = getLastUserMessage(useChatStore.getState().history);
       if (!lastUserMessage) {
@@ -133,10 +134,10 @@ const useChatStore = create<ChatState>((set) => ({
             if (functionName === 'TaikoNodeEnvironmentSetup') {
               if (!password || !privateKey) {
                 set((state) => ({ ...state, showCredentialsModal: true }));
-                await waitForDetails(password);
+                //await waitForDetails(password);
               }
               const res = await taikoNodeEnvironmentSetup({ host: functionArguments.host, username: functionArguments.username, password: password });
-              set((state) => ({ ...state, showCredentialsModal: false }));
+              //set((state) => ({ ...state, showCredentialsModal: false }));
               const newMessage: ChatMessage = {
                 id: Date.now(),
                 sender: 'AI assistant',

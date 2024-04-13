@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState ,useContext} from 'react';
 import { Input, Button, Flex, Spacer } from '@chakra-ui/react';
+import { ModalContext } from '../context/ModalContext';
+import useChatStore from '../state/chat';
 
 interface PasswordComponentProps {
-  onSubmit: (password: string) => void;
+  //onSubmit: (password: string) => void;
   onFileSelect: (e: React.ChangeEvent<HTMLInputElement>) => void; // Update the type
 }
 
-const PasswordComponent: React.FC<PasswordComponentProps> = ({ onSubmit, onFileSelect }) => {
+//const PasswordComponent: React.FC<PasswordComponentProps> = ({ onSubmit, onFileSelect }) => {
+  const PasswordComponent: React.FC<PasswordComponentProps> = ({  onFileSelect }) => {
+
+  const { setUserPass } = useContext(ModalContext);
   const [password, setPassword] = useState('');
+  const {setShowPasswordModal} = useChatStore((state) => state)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+    setShowPasswordModal(false)
   };
 
   return (
@@ -36,7 +43,7 @@ const PasswordComponent: React.FC<PasswordComponentProps> = ({ onSubmit, onFileS
       </label>
       <Spacer />
       {/* Submit button */}
-      <Button colorScheme="blue" onClick={() => onSubmit(password)}>
+      <Button colorScheme="blue" onClick={() => setUserPass(password)}>
         Submit
       </Button>
     </Flex>

@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Input, Button, Flex, Spacer } from '@chakra-ui/react';
+import { ModalContext } from '../context/ModalContext';
+import useChatStore from '../state/chat';
 
-interface UpdatePasswordComponentProps {
-  onSubmit: (currentPassword: string, newPassword: string) => void;
-}
+// interface UpdatePasswordComponentProps {
+//   onSubmit: (currentPassword: string, newPassword: string) => void;
+// }
 
-const UpdatePasswordComponent: React.FC<UpdatePasswordComponentProps> = ({ onSubmit }) => {
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+//const UpdatePasswordComponent: React.FC<UpdatePasswordComponentProps> = ({ onSubmit }) => {
+const UpdatePasswordComponent = () => {
 
+  const { currentPassword, setCurrentPassword, newPassword, setNewPassword } = useContext(ModalContext);
+
+  // const [currentPassword, setCurrentPassword] = useState('');
+  // const [newPassword, setNewPassword] = useState('');
+
+  const {setShowUpdatePasswordModal} = useChatStore((state) => state)
   const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentPassword(e.target.value);
   };
@@ -19,9 +26,11 @@ const UpdatePasswordComponent: React.FC<UpdatePasswordComponentProps> = ({ onSub
 
   const handleSubmit = () => {
     if (currentPassword.trim() !== '' && newPassword.trim() !== '') {
-      onSubmit(currentPassword, newPassword);
-      setCurrentPassword('');
-      setNewPassword('');
+      //onSubmit(currentPassword, newPassword);
+      //setCurrentPassword(currentPassword);
+      //setNewPassword(newPassword);
+
+      setShowUpdatePasswordModal(false)
     }
   };
 
