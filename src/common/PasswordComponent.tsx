@@ -11,8 +11,9 @@ interface PasswordComponentProps {
 //const PasswordComponent: React.FC<PasswordComponentProps> = ({ onSubmit, onFileSelect }) => {
   const PasswordComponent: React.FC<PasswordComponentProps> = ({  onFileSelect }) => {
 
-  const { setUserPass } = useContext(ModalContext);
-  const [password, setPassword] = useState('');
+  //const { setUserPass } = useContext(ModalContext);
+  //const [password, setPassword] = useState('');
+  const { password, setPassword, setUserPass } = useContext(ModalContext);
   const {setShowPasswordModal} = useChatStore((state) => state)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

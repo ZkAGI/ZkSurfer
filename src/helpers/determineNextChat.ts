@@ -323,6 +323,7 @@ const headers = {
         prompt,
         response: data.choices[0].message?.content?.trim(),
         finish: data.choices[0].finish_reason, // Replace with your own API response format
+        messages: myArray
       };
     } catch (error: any) {
       console.log('determineNextAction error', error);

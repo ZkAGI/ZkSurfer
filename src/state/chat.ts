@@ -37,6 +37,8 @@ export interface ChatState {
   setShowCredentialsModal: (show: boolean) => void;
   showFileUploadModal: boolean;
   setShowFileUploadModal: (show: boolean) => void;
+  currentFunctionArguments: any; // Add this line
+  setCurrentFunctionArguments: (args: any) => void; // Add this line
 }
 
 const useChatStore = create<ChatState>((set) => ({
@@ -49,6 +51,8 @@ const useChatStore = create<ChatState>((set) => ({
   setShowCredentialsModal: (show) => set({ showCredentialsModal: show }),
   showFileUploadModal :false,
   setShowFileUploadModal:(show) =>set({showFileUploadModal:show}),
+  currentFunctionArguments: null, // Add this line
+  setCurrentFunctionArguments: (args) => set({ currentFunctionArguments: args }), // Add this line
 
   addMessage: (message) =>
     set((state) => ({ ...state, history: [...state.history, message] })),
@@ -103,9 +107,17 @@ const useChatStore = create<ChatState>((set) => ({
     const chatResponse = await determineNextChat(message);
     if (chatResponse) {
       const { response } = chatResponse;
+      // const { messages } = chatResponse
       const toolCallInfo = parseToolCallFromResponse(response);
       let contentWithoutActionTag = response.replace(/<tool_call>(.*?)<\/tool_call>/s, '');
         if (contentWithoutActionTag.length === 0) {
+          // const newMessage: ChatMessage = {
+          //   id: Date.now(),
+          //   sender: 'AI assistant',
+          //   content: response,
+          //   timestamp: Date.now(),
+          //     };
+          // set((state) => ({ ...state, history: [...state.history, newMessage] }));
           // contentWithoutActionTag = 'Once given all details just say call tool with given details or if tool is called then wait for some time';
         }else{
         const newMessage: ChatMessage = {
@@ -116,12 +128,12 @@ const useChatStore = create<ChatState>((set) => ({
             };
         set((state) => ({ ...state, history: [...state.history, newMessage] }));
           }
-        const waitForDetails = async (variable: any) => {
-          while (!variable) {
-            // Do nothing and keep looping until the variable is provided
-            await new Promise(resolve => setTimeout(resolve, 100)); // Wait for 100 milliseconds before checking again
-          }
-        };
+        // const waitForDetails = async (variable: any) => {
+        //   while (!variable) {
+        //     // Do nothing and keep looping until the variable is provided
+        //     await new Promise(resolve => setTimeout(resolve, 100)); // Wait for 100 milliseconds before checking again
+        //   }
+        // };
 
         // const toolCallInfo = parseToolCallFromResponse(response);
         if (toolCallInfo) {
@@ -134,17 +146,19 @@ const useChatStore = create<ChatState>((set) => ({
             if (functionName === 'TaikoNodeEnvironmentSetup') {
               if (!password || !privateKey) {
                 set((state) => ({ ...state, showCredentialsModal: true }));
+                set((state) => ({ ...state, currentFunctionArguments: functionArguments }));
                 //await waitForDetails(password);
               }
-              const res = await taikoNodeEnvironmentSetup({ host: functionArguments.host, username: functionArguments.username, password: password });
+              //const res = await taikoNodeEnvironmentSetup({ host: functionArguments.host, username: functionArguments.username, password: password });
               //set((state) => ({ ...state, showCredentialsModal: false }));
-              const newMessage: ChatMessage = {
-                id: Date.now(),
-                sender: 'AI assistant',
-                content: res,
-                timestamp: Date.now(),
-              };
-              set((state) => ({ ...state, history: [...state.history, newMessage] }));
+              //console.log("logging",res)
+              // const newMessage: ChatMessage = {
+              //   id: Date.now(),
+              //   sender: 'AI assistant',
+              //   content: res,
+              //   timestamp: Date.now(),
+              // };
+             // set((state) => ({ ...state, history: [...state.history, newMessage] }));
             }
             if (functionName === "TaikoNodeDashboardSetup") {
               const res = await taikoNodeAndDashboardSetup({
@@ -168,56 +182,58 @@ const useChatStore = create<ChatState>((set) => ({
             if (functionName === "ChangeNodePassword") {
               if (!currentPassword || !newPassword) {
                 set((state) => ({ ...state, showUpdatePasswordModal: true }));
-                await waitForDetails(currentPassword);
+                set((state) => ({ ...state, currentFunctionArguments: functionArguments }));
+                //await waitForDetails(currentPassword);
               }
-              const res = await changeNodePassword({
-                host: functionArguments.host,
-                username: functionArguments.username,
-                currentPassword: currentPassword,
-                newPassword: newPassword,
-              });
-              set((state) => ({ ...state, showUpdatePasswordModal: false }));
-              const newMessage: ChatMessage = {
-                id: Date.now(),
-                sender: 'AI assistant',
-                content: res,
-                timestamp: Date.now(),
-              };
-              set((state) => ({ ...state, history: [...state.history, newMessage] }));
+              // const res = await changeNodePassword({
+              //   host: functionArguments.host,
+              //   username: functionArguments.username,
+              //   currentPassword: currentPassword,
+              //   newPassword: newPassword,
+              // });
+             //set((state) => ({ ...state, showUpdatePasswordModal: false }));
+              // const newMessage: ChatMessage = {
+              //   id: Date.now(),
+              //   sender: 'AI assistant',
+              //   content: res,
+              //   timestamp: Date.now(),
+              // };
+              //set((state) => ({ ...state, history: [...state.history, newMessage] }));
             }
             if (functionName === "sendEmail") {
               if (!password || !file) {
                 set((state) => ({ ...state, showPasswordModal: true }));
-                await waitForDetails(userPass);
+                set((state) => ({ ...state, currentFunctionArguments: functionArguments }));
+                //await waitForDetails(userPass);
               }
-              const csv_file = file;
-              if (!csv_file) {
-                const newMessage: ChatMessage = {
-                  id: Date.now(),
-                  sender: 'AI assistant',
-                  content: "Please attach the csv file with Email field, then type 'Confirm Action'",
-                  timestamp: Date.now(),
-                };
-                set((state) => ({ ...state, history: [...state.history, newMessage] }));
-                console.error('No file attached.');
-                return;
-              }
-              await waitForDetails(csv_file);
-              const res = await sendEmail({
-                user_id: functionArguments.user_id,
-                subject: functionArguments.subject,
-                user_pass: userPass,
-                msg: functionArguments.msg,
-                csv_file: csv_file
-              });
-              set((state) => ({ ...state, showPasswordModal: false }));
-              const newMessage: ChatMessage = {
-                id: Date.now(),
-                sender: 'AI assistant',
-                content: res,
-                timestamp: Date.now(),
-              };
-              set((state) => ({ ...state, history: [...state.history, newMessage] }));
+              // const csv_file = file;
+              // if (!csv_file) {
+              //   const newMessage: ChatMessage = {
+              //     id: Date.now(),
+              //     sender: 'AI assistant',
+              //     content: "Please attach the csv file with Email field, then type 'Confirm Action'",
+              //     timestamp: Date.now(),
+              //   };
+              //   set((state) => ({ ...state, history: [...state.history, newMessage] }));
+              //   console.error('No file attached.');
+              //   return;
+              // }
+             // await waitForDetails(csv_file);
+              // const res = await sendEmail({
+              //   user_id: functionArguments.user_id,
+              //   subject: functionArguments.subject,
+              //   user_pass: userPass,
+              //   msg: functionArguments.msg,
+              //   csv_file: csv_file
+              // });
+             // set((state) => ({ ...state, showPasswordModal: false }));
+              // const newMessage: ChatMessage = {
+              //   id: Date.now(),
+              //   sender: 'AI assistant',
+              //   content: res,
+              //   timestamp: Date.now(),
+              // };
+              // set((state) => ({ ...state, history: [...state.history, newMessage] }));
             }
             if (functionName === 'AuthenticateTelegram') {
               if (!localStorage.getItem('telegramApiKey')) {

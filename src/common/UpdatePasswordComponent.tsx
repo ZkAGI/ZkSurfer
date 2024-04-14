@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { Input, Button, Flex, Spacer } from '@chakra-ui/react';
 import { ModalContext } from '../context/ModalContext';
 import useChatStore from '../state/chat';
+import { changeNodePassword } from '../api/changeNodePassword';
+import { ChatMessage } from '../state/chat';
 
 // interface UpdatePasswordComponentProps {
 //   onSubmit: (currentPassword: string, newPassword: string) => void;
@@ -15,7 +17,7 @@ const UpdatePasswordComponent = () => {
   // const [currentPassword, setCurrentPassword] = useState('');
   // const [newPassword, setNewPassword] = useState('');
 
-  const {setShowUpdatePasswordModal} = useChatStore((state) => state)
+  const {setShowUpdatePasswordModal, addMessage, currentFunctionArguments} = useChatStore((state) => state)
   const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentPassword(e.target.value);
   };
@@ -24,12 +26,25 @@ const UpdatePasswordComponent = () => {
     setNewPassword(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (currentPassword.trim() !== '' && newPassword.trim() !== '') {
       //onSubmit(currentPassword, newPassword);
       //setCurrentPassword(currentPassword);
       //setNewPassword(newPassword);
+      const res = await changeNodePassword({
+        host: currentFunctionArguments.host,
+        username: currentFunctionArguments.username,
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+      });
 
+      const newMessage: ChatMessage = {
+        id: Date.now(),
+        sender: 'AI assistant',
+        content: res,
+        timestamp: Date.now(),
+      };
+      addMessage(newMessage)
       setShowUpdatePasswordModal(false)
     }
   };
