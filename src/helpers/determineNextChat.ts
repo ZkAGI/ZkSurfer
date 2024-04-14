@@ -266,7 +266,8 @@ chat: |
       }
 ]
   
-  You should ask user for parameters that are required to perform a task and keep it null it user has not entered it the default value should be null only`;
+  You should ask user for parameters that are required to perform a task and keep it null it user has not entered it the default value should be null only
+  Always return tool call when you get all details.`;
   myArray.push({role:"system",content:mysystemMessage})
 export async function determineNextChat(
   taskInstructions: string,

@@ -8,6 +8,7 @@ import OptionsDropdown from './OptionsDropdown';
 import logo from '../assets/img/icon-128.png';
 import ChatUI from './ChatUI';
 import LoginComponent from '../Login/LoginComponent';
+import { ModalProvider } from '../context/ModalContext';
 
 const App: React.FC = () => {
   const openAIKey = useAppState((state) => state.settings.openAIKey);
@@ -87,7 +88,9 @@ const App: React.FC = () => {
             </TabPanel>
 
             <TabPanel>
+              <ModalProvider>
               <ChatUI />
+              </ModalProvider>
             </TabPanel>
           </TabPanels>
         </Tabs>
