@@ -3,7 +3,6 @@ import { Box, Button, Flex, Input, Text } from '@chakra-ui/react';
 import { ModalContext } from '../context/ModalContext';
 import useChatStore from '../state/chat';
 import { ChatMessage } from '../state/chat';
-import { sendEmail } from '../api/sendEmail';
 
 interface FileUploadComponentProps {
   onFileSelect: (file: File) => void;
@@ -21,31 +20,6 @@ interface FileUploadComponentProps {
        //onFileSelect(file);
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
-      const csv_file = file;
-      if (!csv_file) {
-        const newMessage: ChatMessage = {
-          id: Date.now(),
-          sender: 'AI assistant',
-          content: "Please attach the csv file with Email field, then type 'Confirm Action'",
-          timestamp: Date.now(),
-        };
-        addMessage(newMessage)
-      }
-        const res = await sendEmail({
-          user_id: currentFunctionArguments.user_id,
-          subject: currentFunctionArguments.subject,
-          user_pass: userPass,
-          msg: currentFunctionArguments.msg,
-          csv_file: selectedFile
-        });
-
-        const newMessage: ChatMessage = {
-          id: Date.now(),
-          sender: 'AI assistant',
-          content: res,
-          timestamp: Date.now(),
-        };
-        addMessage(newMessage);
       setShowFileUploadModal(false)
     }
   };

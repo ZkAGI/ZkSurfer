@@ -271,6 +271,7 @@ const useChatStore = create<ChatState>((set) => ({
                 const csv_file = file;
                 if (!csv_file) {
                   set((state) => ({ ...state, showFileUploadModal: true }));
+                  set((state) => ({ ...state, currentFunctionArguments: functionArguments }));
 
                  } else {
                   const res = await dmTelegramMembers(apikey, apihash, phone, functionArguments.msg, csv_file)

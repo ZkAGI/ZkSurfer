@@ -101,14 +101,14 @@ const ChatUI = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const selectedFile = e.target.files[0];
-      setFile(selectedFile);
-      setFileName(selectedFile.name);
-      setIsFileAttached(true); // Set file attachment status
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files.length > 0) {
+  //     const selectedFile = e.target.files[0];
+  //     setFile(selectedFile);
+  //     setFileName(selectedFile.name);
+  //     setIsFileAttached(true); // Set file attachment status
+  //   }
+  // };
 
   useEffect(() => {
     const chatHistoryElement = document.getElementById('chat-history');
@@ -131,7 +131,8 @@ const ChatUI = () => {
           <ModalBody>
             <PasswordComponent 
           // onSubmit={setUserPass} 
-            onFileSelect={handleFileChange} />
+           //onFileSelect={handleFileChange} 
+           />
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" onClick={hidePasswordInput}>Submit</Button>
@@ -190,7 +191,7 @@ const ChatUI = () => {
         //setFile(file);
         setFileName(file.name);
         setIsFileAttached(true);
-        setShowFileUploadModal(false);
+        //setShowFileUploadModal(false);
       }} />
     </ModalBody>
     <ModalFooter>
