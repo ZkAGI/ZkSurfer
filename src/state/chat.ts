@@ -238,6 +238,7 @@ const useChatStore = create<ChatState>((set) => ({
             if (functionName === 'AuthenticateTelegram') {
               if (!localStorage.getItem('telegramApiKey')) {
                 const res = await requestCode(functionArguments.api_id, functionArguments.api_hash, functionArguments.phone)
+                console.log("otp response", res)
                 const otp = prompt("Enter the OTP:")
                 if (otp === null) {
                   console.error('User canceled OTP input.');
@@ -265,23 +266,10 @@ const useChatStore = create<ChatState>((set) => ({
             if (functionName === "dmTelegramMembers") {
               const isUserLoggedIn = localStorage.getItem('telegramlogin');
               if (isUserLoggedIn === 'true') {
-                const apikey = localStorage.getItem('telegramApiKey') || '';
-                const apihash = localStorage.getItem('telegramApiHash') || '';
-                const phone = localStorage.getItem('telegramPhoneNumber') || '';
                 const csv_file = file;
                 if (!csv_file) {
                   set((state) => ({ ...state, showFileUploadModal: true }));
                   set((state) => ({ ...state, currentFunctionArguments: functionArguments }));
-
-                 } else {
-                  const res = await dmTelegramMembers(apikey, apihash, phone, functionArguments.msg, csv_file)
-                  const newMessage: ChatMessage = {
-                    id: Date.now(),
-                    sender: 'AI assistant',
-                    content: "Messages Send Successfully",
-                    timestamp: Date.now(),
-                  };
-                  set((state) => ({ ...state, history: [...state.history, newMessage] }));
                 }
               } else {
                 const newMessage: ChatMessage = {
