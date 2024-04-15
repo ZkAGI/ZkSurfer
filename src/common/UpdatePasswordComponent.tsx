@@ -8,6 +8,7 @@ import { ChatMessage } from '../state/chat';
 const UpdatePasswordComponent = () => {
   const { currentPassword, setCurrentPassword, newPassword, setNewPassword } =
     useContext(ModalContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { setShowUpdatePasswordModal, addMessage, currentFunctionArguments } =
     useChatStore((state) => state);
@@ -22,6 +23,7 @@ const UpdatePasswordComponent = () => {
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     if (currentPassword.trim() !== '' && newPassword.trim() !== '') {
       const res = await changeNodePassword({
         host: currentFunctionArguments.host,
@@ -57,7 +59,7 @@ const UpdatePasswordComponent = () => {
         onChange={handleNewPasswordChange}
         mb={6}
       />
-      <Button colorScheme="blue" onClick={handleSubmit} mb={4}>
+      <Button colorScheme="blue" onClick={handleSubmit} mb={4} isLoading={isLoading}  loadingText="Updating password ...">
         Update Password
       </Button>
     </Flex>

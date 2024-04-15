@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Web3AuthNoModal } from "@web3auth/no-modal";
 import { CHAIN_NAMESPACES, IProvider, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from "@web3auth/base";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
@@ -7,8 +7,10 @@ import "./login.css";
 import RPC from "./web3RPC"; // for using web3.js
 
 const clientId = "BPi5PB_UiIZ-cPz1GtV5i1I2iOSOHuimiXBI0e-Oe_u6X3oVAbCiAZOTEBtTXw4tsluTITPqA8zMsfxIKMjiqNQ"; // get from https://dashboard.web3auth.io
-
-function LoginComponent() {
+interface LoginComponentProps {
+  onLogin: () => void; // Add a type for the onLogin prop
+}
+function LoginComponent({onLogin}:LoginComponentProps) {
   const [web3auth, setWeb3auth] = useState<Web3AuthNoModal | null>(null);
   const [provider, setProvider] = useState<IProvider | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean>(false); // Modify here
@@ -44,10 +46,7 @@ function LoginComponent() {
 
         await web3auth.init();
         setProvider(web3auth.provider);
-        if (web3auth.connected) {
-          localStorage.setItem("userLoggedIn","true")
-          setLoggedIn(true);
-        }
+        
       } catch (error) {
         console.error(error);
       }
@@ -67,6 +66,9 @@ function LoginComponent() {
       loginProvider: "google",
     });
     setProvider(web3authProvider);
+    setLoggedIn(true); // Set loggedIn to true after successful login
+    localStorage.setItem("userLoggedIn", "true");
+    onLogin();
   };
 
   const authenticateUser = async () => {
@@ -226,7 +228,7 @@ function LoginComponent() {
         
       </h1>
 
-      <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
+      <div className="grid">{!loggedIn ? unloggedInView : null}</div>
 
     </div>
   );

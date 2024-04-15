@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Box,
   ChakraProvider,
@@ -38,9 +38,13 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.setItem('userLoggedIn', 'false');
+    localStorage.removeItem('openlogin_store')
     setLoggedIn(false);
+  };
+  const handleLogin = () => {
+    setLoggedIn(true);
   };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -105,7 +109,7 @@ const App: React.FC = () => {
         </Tabs>
 
         ) : (
-  <LoginComponent />
+  <LoginComponent onLogin={handleLogin}/>
 )} 
       </Box>
     </ChakraProvider>

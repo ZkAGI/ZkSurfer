@@ -10,6 +10,7 @@ const CredentialsComponent = () => {
     useContext(ModalContext);
   const { setShowCredentialsModal, addMessage, currentFunctionArguments } =
     useChatStore((state) => state);
+    const [isLoading, setIsLoading] = useState(false);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -20,6 +21,7 @@ const CredentialsComponent = () => {
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     if (password.trim() !== '' && privateKey.trim() !== '') {
       const res = await taikoNodeEnvironmentSetup({
         host: currentFunctionArguments.host,
@@ -53,7 +55,7 @@ const CredentialsComponent = () => {
         onChange={handlePrivateKeyChange}
         mb={6}
       />
-      <Button colorScheme="blue" onClick={handleSubmit} w="full" maxW="sm" mb={6}>
+      <Button colorScheme="blue" onClick={handleSubmit} w="full" maxW="sm" mb={6} isLoading={isLoading}  loadingText="Setting environment...">
         Submit
       </Button>
     </Flex>
