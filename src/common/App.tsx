@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Box, ChakraProvider, Heading, HStack, Tabs, TabList, Tab, TabPanels, TabPanel, Button, Input } from '@chakra-ui/react';
+import {
+  Box,
+  ChakraProvider,
+  Heading,
+  HStack,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+  Button,
+  Input,
+} from '@chakra-ui/react';
 import { useAppState } from '../state/store';
 import ModelDropdown from './ModelDropdown';
 import SetAPIKey from './SetAPIKey';
@@ -15,15 +27,14 @@ const App: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-
   useEffect(() => {
     // Check local storage to see if the user has already logged in
     const isUserLoggedIn = localStorage.getItem('userLoggedIn');
     if (isUserLoggedIn === 'true') {
-      console.log(isUserLoggedIn)
+      console.log(isUserLoggedIn);
       setLoggedIn(true);
     } else {
-      setLoggedIn(false)
+      setLoggedIn(false);
     }
   }, []);
 
@@ -43,9 +54,7 @@ const App: React.FC = () => {
     }
 
     // Call the parent component callback with the selected file and message
-
   };
-
 
   return (
     <ChakraProvider>
@@ -62,13 +71,13 @@ const App: React.FC = () => {
             <Heading as="h1" size="lg" flex={1}>
               ZkSurf
             </Heading>
-            {/* {loggedIn ?(
+            {loggedIn ?(
             <Button
       onClick={handleLogout}
       colorScheme="red"
     >
       Logout
-    </Button>):NaN} */}
+    </Button>):NaN}
             <HStack spacing={2}>
               <ModelDropdown />
               <OptionsDropdown />
@@ -76,7 +85,7 @@ const App: React.FC = () => {
           </HStack>
         </Box>
 
-        {/* {loggedIn ? ( */}
+        {loggedIn ? (
         <Tabs>
           <TabList>
             <Tab>Browser Automation</Tab>
@@ -89,16 +98,15 @@ const App: React.FC = () => {
 
             <TabPanel>
               <ModalProvider>
-              <ChatUI />
+                <ChatUI />
               </ModalProvider>
             </TabPanel>
           </TabPanels>
         </Tabs>
 
-        {/* ) : (
+        ) : (
   <LoginComponent />
-)} */}
-
+)} 
       </Box>
     </ChakraProvider>
   );
