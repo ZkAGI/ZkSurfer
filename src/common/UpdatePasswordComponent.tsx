@@ -5,20 +5,15 @@ import useChatStore from '../state/chat';
 import { changeNodePassword } from '../api/changeNodePassword';
 import { ChatMessage } from '../state/chat';
 
-// interface UpdatePasswordComponentProps {
-//   onSubmit: (currentPassword: string, newPassword: string) => void;
-// }
-
-//const UpdatePasswordComponent: React.FC<UpdatePasswordComponentProps> = ({ onSubmit }) => {
 const UpdatePasswordComponent = () => {
+  const { currentPassword, setCurrentPassword, newPassword, setNewPassword } =
+    useContext(ModalContext);
 
-  const { currentPassword, setCurrentPassword, newPassword, setNewPassword } = useContext(ModalContext);
-
-  // const [currentPassword, setCurrentPassword] = useState('');
-  // const [newPassword, setNewPassword] = useState('');
-
-  const {setShowUpdatePasswordModal, addMessage, currentFunctionArguments} = useChatStore((state) => state)
-  const handleCurrentPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { setShowUpdatePasswordModal, addMessage, currentFunctionArguments } =
+    useChatStore((state) => state);
+  const handleCurrentPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setCurrentPassword(e.target.value);
   };
 
@@ -28,9 +23,6 @@ const UpdatePasswordComponent = () => {
 
   const handleSubmit = async () => {
     if (currentPassword.trim() !== '' && newPassword.trim() !== '') {
-      //onSubmit(currentPassword, newPassword);
-      //setCurrentPassword(currentPassword);
-      //setNewPassword(newPassword);
       const res = await changeNodePassword({
         host: currentFunctionArguments.host,
         username: currentFunctionArguments.username,
@@ -44,28 +36,28 @@ const UpdatePasswordComponent = () => {
         content: res,
         timestamp: Date.now(),
       };
-      addMessage(newMessage)
-      setShowUpdatePasswordModal(false)
+      addMessage(newMessage);
+      setShowUpdatePasswordModal(false);
     }
   };
 
   return (
-    <Flex>
+    <Flex direction="column" align="center" w="full" maxW="md" mx="auto">
       <Input
         type="password"
         placeholder="Enter current password"
         value={currentPassword}
         onChange={handleCurrentPasswordChange}
+        mb={4}
       />
-      <Spacer />
       <Input
         type="password"
         placeholder="Enter new password"
         value={newPassword}
         onChange={handleNewPasswordChange}
+        mb={6}
       />
-      <Spacer />
-      <Button colorScheme="blue" onClick={handleSubmit}>
+      <Button colorScheme="blue" onClick={handleSubmit} mb={4}>
         Update Password
       </Button>
     </Flex>

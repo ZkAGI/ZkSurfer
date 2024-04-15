@@ -5,16 +5,11 @@ import useChatStore from '../state/chat';
 import { taikoNodeEnvironmentSetup } from '../api/taikoNodeCreation';
 import { ChatMessage } from '../state/chat';
 
-// interface CredentialsComponentProps {
-//   onSubmit: (password: string, privateKey: string) => void;
-// }
-
-//const CredentialsComponent: React.FC<CredentialsComponentProps> = ({ onSubmit }) => {
-  const CredentialsComponent = () => {
-  const { password, setPassword, privateKey, setPrivateKey } = useContext(ModalContext);
-const {setShowCredentialsModal, addMessage, currentFunctionArguments} = useChatStore((state) => state)
-  // const [password, setPassword] = useState('');
-  // const [privateKey, setPrivateKey] = useState('');
+const CredentialsComponent = () => {
+  const { password, setPassword, privateKey, setPrivateKey } =
+    useContext(ModalContext);
+  const { setShowCredentialsModal, addMessage, currentFunctionArguments } =
+    useChatStore((state) => state);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -26,39 +21,39 @@ const {setShowCredentialsModal, addMessage, currentFunctionArguments} = useChatS
 
   const handleSubmit = async () => {
     if (password.trim() !== '' && privateKey.trim() !== '') {
-      //onSubmit(password, privateKey);
-      // setPassword(password);
-      // setPrivateKey(privateKey);
-      //console.log("showtest",currentFunctionArguments)
-      const res = await taikoNodeEnvironmentSetup({ host: currentFunctionArguments.host, username: currentFunctionArguments.username, password: password });
+      const res = await taikoNodeEnvironmentSetup({
+        host: currentFunctionArguments.host,
+        username: currentFunctionArguments.username,
+        password: password,
+      });
       const newMessage: ChatMessage = {
         id: Date.now(),
         sender: 'AI assistant',
         content: res,
         timestamp: Date.now(),
       };
-     //set((state) => ({ ...state, history: [...state.history, newMessage] }));
-     addMessage(newMessage)
-      setShowCredentialsModal(false)
+      addMessage(newMessage);
+      setShowCredentialsModal(false);
     }
   };
 
   return (
-    <Flex>
+    <Flex direction="column" align="center" w="full" maxW="md" mx="auto">
       <Input
         type="password"
         placeholder="Enter password"
         value={password}
         onChange={handlePasswordChange}
+        mb={4}
       />
-      <Spacer />
       <Input
         type="password"
         placeholder="Enter private key"
         value={privateKey}
         onChange={handlePrivateKeyChange}
-      /><Spacer/>
-      <Button colorScheme="blue" onClick={handleSubmit}>
+        mb={6}
+      />
+      <Button colorScheme="blue" onClick={handleSubmit} w="full" maxW="sm" mb={6}>
         Submit
       </Button>
     </Flex>

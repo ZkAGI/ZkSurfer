@@ -30,7 +30,9 @@ export const ModalContext = createContext<ModalContextValue>({
   setPrivateKey: () => {},
 });
 
-export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [file, setFile] = useState<File | null>(null);
   const [userPass, setUserPass] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -53,5 +55,7 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setPrivateKey,
   };
 
-  return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;
+  return (
+    <ModalContext.Provider value={value}>{children}</ModalContext.Provider>
+  );
 };
