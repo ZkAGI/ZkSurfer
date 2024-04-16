@@ -242,26 +242,17 @@ chat: |
         "type": "function",
         "function": {
           "name": "getLeoCodeSolution",
-          "description": "Fetches the solution code for a given LeoCode query",
+          "description": "Generates a comprehensive response for queries related to Leo programming language and Aleo blockchain. This function provides details about the Leo programming language, its features, use cases, and the Aleo blockchain, including its architecture, consensus mechanism, and applications.",
           "parameters": {
             "type": "object",
             "properties": {
               "query": {
                 "type": "string",
-                "description": "The query to search for on the LeoCode API"
-              }
+                "description": "The query related to Leo programming or Aleo blockchain"
+            }
             },
             "required": ["query"]
           },
-          "return": {
-            "type": "object",
-            "properties": {
-              "code": {
-                "type": "string",
-                "description": "The solution code for the given query"
-              }
-            }
-          }
         }
       }
 ]

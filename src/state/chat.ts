@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import React from 'react';
+import { Box, Code, Text, BoxProps, CodeProps } from '@chakra-ui/react';
 import { determineNextChat } from '../helpers/determineNextChat';
 import getLastUserMessage from '../helpers/getLastUserMessage';
 import {
@@ -11,6 +13,7 @@ import { authenticateCode, requestCode } from '../api/telegram_auth';
 import { dmTelegramMembers } from '../api/dmtelegram';
 import { scrapeMembers } from '../api/scrapetelegram';
 import { LeofetchData } from '../api/leocode';
+import { FaCopy } from 'react-icons/fa6';
 
 export interface ChatMessage {
   id: number;
@@ -117,6 +120,72 @@ const useChatStore = create<ChatState>((set) => ({
           /<tool_call>(.*?)<\/tool_call>/s,
           ''
         );
+        // if (contentWithoutActionTag.includes('```')) {
+        //   // Code is present
+        //   const codeBlocks = contentWithoutActionTag.split('```');
+        //   let formattedContent = [];
+        
+        //   for (let i = 0; i < codeBlocks.length; i++) {
+        //     if (i % 2 === 0) {
+        //       // Non-code block
+        //       formattedContent.push(codeBlocks[i]);
+        //     } else {
+        //       // Code block
+        //       formattedContent.push(
+        //         React.createElement(
+        //           'pre',
+        //           { key: i, style: { backgroundColor: '#f8f8f8', padding: '10px', overflowX: 'auto' } },
+        //           React.createElement('code', { style: { fontFamily: 'monospace' } }, codeBlocks[i])
+        //         )
+        //       );
+        //     }
+        //   }
+        
+        //   contentWithoutActionTag = formattedContent;
+        // }
+        if (contentWithoutActionTag.includes('```')) {
+          const codeBlocks = contentWithoutActionTag.split('```');
+          let formattedContent = [];
+        
+          for (let i = 0; i < codeBlocks.length; i++) {
+            if (i % 2 === 0) {
+              formattedContent.push(codeBlocks[i]);
+            } else {
+              const codeBlockContent = codeBlocks[i];
+        
+              formattedContent.push(
+                React.createElement(
+                  'div',
+                  { key: i, style: { position: 'relative' } },
+                  React.createElement(
+                    'button',
+                    {
+                      style: {
+                        position: 'absolute',
+                        top: '5px',
+                        right: '5px',
+                        cursor: 'pointer',
+                      },
+                      onClick: () => {
+                        navigator.clipboard.writeText(codeBlockContent);
+                        alert('Code copied to clipboard!');
+                      },
+                    },
+                    React.createElement(FaCopy, null)
+                  ),
+                  React.createElement(
+                    'pre',
+                    { style: { backgroundColor: '#f8f8f8', padding: '10px', overflowX: 'auto' } },
+                    React.createElement('code', { style: { fontFamily: 'monospace' } }, codeBlockContent)
+                  )
+                )
+              );
+            }
+          }
+        
+          contentWithoutActionTag = formattedContent;
+        }
+        
         if (contentWithoutActionTag.length === 0) {
           // contentWithoutActionTag = 'Once given all details just say call tool with given details or if tool is called then wait for some time';
         } else {
@@ -126,6 +195,7 @@ const useChatStore = create<ChatState>((set) => ({
             content: contentWithoutActionTag,
             timestamp: Date.now(),
           };
+          console.log("contentWithoutActionTag",contentWithoutActionTag)
           set((state) => ({
             ...state,
             history: [...state.history, newMessage],
@@ -289,6 +359,7 @@ const useChatStore = create<ChatState>((set) => ({
             }
             if (functionName === 'getLeoCodeSolution') {
               const res = await LeofetchData(functionArguments.query);
+              console.log("varun",res)
               const newMessage: ChatMessage = {
                 id: Date.now(),
                 sender: 'AI assistant',
