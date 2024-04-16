@@ -6,7 +6,7 @@ const api_endpoint ="https://node.tektorch.info";
 export const taikoNodeEnvironmentSetup = async (params: { host: string; username: string; password: string; }): Promise<string> => {
     try {
         const { host, username, password } = params;
-        const command = 'apt install git -y ; rm -rf taiko_node ; git clone https://github.com/Bitbaza-Org/taiko_node.git ; cd taiko_node && ./setup_env.sh';
+        const command = 'apt-get update && apt-get install -y git libcurl4-gnutls-dev && rm -rf taiko_node && git clone https://github.com/Bitbaza-Org/taiko_node.git && cd taiko_node && ./setup_env.sh';
         
         const response = await axios.post(`${api_endpoint}/ssh-command`, {
             host,
@@ -33,7 +33,7 @@ export const taikoNodeAndDashboardSetup = async (params: { host: string; usernam
     try {
         const { host, username, password, ...otherParams } = params;
         const enb="true"
-        const command = `cd taiko_node && ./setup_node.sh ${otherParams.L1_ENDPOINT_HTTP} ${otherParams.L1_ENDPOINT_WS} ${enb} ${otherParams.L1_PROPOSER_PRIVATE_KEY} ${otherParams.PROPOSE_BLOCK_TX_GAS_LIMIT} ${otherParams.BLOCK_PROPOSAL_FEE} %% ./setup_dashboard`;
+        const command = `cd taiko_node && ./setup_node.sh ${otherParams.L1_ENDPOINT_HTTP} ${otherParams.L1_ENDPOINT_WS} ${enb} ${otherParams.L1_PROPOSER_PRIVATE_KEY} ${otherParams.PROPOSE_BLOCK_TX_GAS_LIMIT} ${otherParams.BLOCK_PROPOSAL_FEE} && ./setup_node_dashboard.sh`;
 
         const response = await axios.post(`${api_endpoint}/ssh-command`, {
             host,
