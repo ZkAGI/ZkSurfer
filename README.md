@@ -10,7 +10,7 @@ autosurf is fully open-source, and we don't send any page contents or instructio
 
 ## Table of Contents
 
-- [autosurf AI: Full Browser Automation](#autosurf-ai-full-browser-automation)
+- [ZkSurfer AI: Full Browser Automation](#zksurfer-ai-full-browser-automation)
   - [Table of Contents](#table-of-contents)
   - [Installing and Running](#installing-and-running)
     - [Installing the extension](#installing-the-extension)
@@ -62,13 +62,15 @@ Currently this extension is only available through this GitHub repo. We'll relea
 Technology currently used by this extension:
 
 - [Chrome Extension Manifest V3](https://developer.chrome.com/docs/extensions/mv3/intro/mv3-overview/)
-- [React 17](https://reactjs.org)
+- [React 18](https://reactjs.org)
 - [Webpack 5](https://webpack.js.org/)
 - [Webpack Dev Server 4](https://webpack.js.org/configuration/dev-server/)
 - [React Hot Loader](https://github.com/gaearon/react-hot-loader)
 - [eslint-config-react-app](https://www.npmjs.com/package/eslint-config-react-app)
 - [Prettier](https://prettier.io/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [Zustand] (https://zustand-demo.pmnd.rs/)
+- [Chakra UI](https://v2.chakra-ui.com/)
 
 ## Resources
 
