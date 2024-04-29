@@ -14,11 +14,14 @@ import { dmTelegramMembers } from '../api/dmtelegram';
 import { scrapeMembers } from '../api/scrapetelegram';
 import { LeofetchData } from '../api/leocode';
 import { FaCopy } from 'react-icons/fa6';
+import OTP from '../common/OTP';
+import { createElement } from 'react';
 
+type ElementType = JSX.Element | string;
 export interface ChatMessage {
   id: number;
   sender: string;
-  content: string;
+  content: ElementType;
   timestamp: number;
 }
 
@@ -269,19 +272,27 @@ const useChatStore = create<ChatState>((set) => ({
                   functionArguments.phone
                 );
                 console.log('otp response', res);
-                const otp = prompt('Enter the OTP:');
-                if (otp === null) {
-                  console.error('User canceled OTP input.');
-                  return;
-                }
-                const res1 = await authenticateCode(
-                  functionArguments.phone,
-                  otp
-                );
+                // const otp = prompt('Enter the OTP:');
+                // if (otp === null) {
+                //   console.error('User canceled OTP input.');
+                //   return;
+                // }
+                // const res1 = await authenticateCode(
+                //   functionArguments.phone,
+                //   otp
+                // );
+                // const newMessage: ChatMessage = {
+                //   id: Date.now(),
+                //   sender: 'AI assistant',
+                //   content: res1,
+                //   timestamp: Date.now(),
+                // };
+
+                const OTPComponent = createElement(OTP, { functionArguments });
                 const newMessage: ChatMessage = {
                   id: Date.now(),
-                  sender: 'AI assistant',
-                  content: res1,
+                  sender: 'user',
+                  content: OTPComponent,
                   timestamp: Date.now(),
                 };
                 set((state) => ({
@@ -359,7 +370,6 @@ const useChatStore = create<ChatState>((set) => ({
             }
             if (functionName === 'getLeoCodeSolution') {
               const res = await LeofetchData(functionArguments.query);
-              console.log("varun",res)
               const newMessage: ChatMessage = {
                 id: Date.now(),
                 sender: 'AI assistant',
