@@ -177,9 +177,93 @@ const ChatUI = () => {
     setShowPasswordModal(false);
   };
 
+ {/* Credentials Logic */}
+  const addCredentialsMessage = () => {
+    const newMessage: ChatMessage = {
+      id: Date.now(),
+      sender: 'user',
+      content: (
+        <CredentialsComponent
+        />
+      ),
+      timestamp: Date.now(),
+    };
+    addMessage(newMessage);
+  };
+
+  useEffect(() => {
+    if (showCredentialsModal) {
+      addCredentialsMessage();
+    }
+  }, [showCredentialsModal]);
+
+  {/* Update Password Logic */}
+  const addUpdatePasswordMessage = () => {
+    const newMessage: ChatMessage = {
+      id: Date.now(),
+      sender: 'user',
+      content: (
+        <UpdatePasswordComponent
+        />
+      ),
+      timestamp: Date.now(),
+    };
+    addMessage(newMessage);
+  };
+
+  useEffect(() => {
+    if (showUpdatePasswordModal) {
+      addUpdatePasswordMessage();
+    }
+  }, [showUpdatePasswordModal]);
+
+  {/* Send Email Logic */}
+  const addPasswordMessage = () => {
+    const newMessage: ChatMessage = {
+      id: Date.now(),
+      sender: 'user',
+      content: (
+        <PasswordComponent
+        />
+      ),
+      timestamp: Date.now(),
+    };
+    addMessage(newMessage);
+  };
+
+  useEffect(() => {
+    if (showPasswordModal) {
+      addPasswordMessage();
+    }
+  }, [showPasswordModal]);
+
+  {/* File Upload Modal */}
+const addTelegramMessage = () => {
+    const newMessage: ChatMessage = {
+      id: Date.now(),
+      sender: 'user',
+      content: (
+        <FileUploadComponent
+        onFileSelect={(file) => {
+          setFileName(file.name);
+          setIsFileAttached(true);
+        }}
+        />
+      ),
+      timestamp: Date.now(),
+    };
+    addMessage(newMessage);
+  };
+
+  useEffect(() => {
+    if (showFileUploadModal) {
+      addTelegramMessage();
+    }
+  }, [showFileUploadModal]);
+
   return (
     <>
-      <Modal isOpen={showPasswordModal} onClose={hidePasswordInput}>
+      {/* <Modal isOpen={showPasswordModal} onClose={hidePasswordInput}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Enter Password</ModalHeader>
@@ -188,10 +272,10 @@ const ChatUI = () => {
             <PasswordComponent />
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal> */}
 
       {/* Update Password Modal */}
-      <Modal
+      {/* <Modal
         isOpen={showUpdatePasswordModal}
         onClose={() => setShowUpdatePasswordModal(false)}
       >
@@ -203,10 +287,10 @@ const ChatUI = () => {
             <UpdatePasswordComponent />
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal> */}
 
       {/* Credentials Modal */}
-      <Modal
+      {/* <Modal
         isOpen={showCredentialsModal}
         onClose={() => setShowCredentialsModal(false)}
       >
@@ -218,10 +302,10 @@ const ChatUI = () => {
             <CredentialsComponent />
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal> */}
 
       {/* File Upload Modal */}
-      <Modal
+      {/* <Modal
         isOpen={showFileUploadModal}
         onClose={() => setShowFileUploadModal(false)}
       >
@@ -238,7 +322,7 @@ const ChatUI = () => {
             />
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal> */}
 
       <ChatHistory messages={history} />
       <Textarea

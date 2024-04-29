@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Input, Button, Flex, Spacer, Box } from '@chakra-ui/react';
+import { Input, Button, Flex, Text, Box } from '@chakra-ui/react';
 import { ModalContext } from '../context/ModalContext';
 import useChatStore from '../state/chat';
 import { ChatMessage } from '../state/chat';
@@ -11,6 +11,7 @@ const PasswordComponent = () => {
   const { setShowPasswordModal, addMessage, currentFunctionArguments } =
     useChatStore((state) => state);
   const [isLoading, setIsLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -55,15 +56,25 @@ const PasswordComponent = () => {
       console.error(error)
     }finally{
       setIsLoading(false); 
+      setSubmitted(true);
       setShowPasswordModal(false);
     }
   };
 
   return (
     <Flex direction="column" align="center" w="full" maxW="md" mx="auto">
+      {submitted ? (
+        <div>Email Sent</div> 
+      ) : (
+        <Box p={4}
+        backgroundColor="gray.100"
+        borderRadius="md"
+        boxShadow="md"
+        mb={4}>
+          <Text mb={4}>Attach File</Text>
       <Input
         type="password"
-        placeholder="Enter password"
+        placeholder="Enter app password "
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         mb={4}
@@ -82,13 +93,15 @@ const PasswordComponent = () => {
             htmlFor="attach-file-input"
             flex="1"
           >
-            Attach File
+            Attach Mailing List
           </Button>
         </Flex>
       </Box>
-      <Button colorScheme="blue" onClick={handleChange as any} mb={4} isLoading={isLoading}  loadingText="Sending email...">
+      <Button colorScheme="blue" onClick={handleChange as any} mb={4} isLoading={isLoading}  loadingText="Sending email..." width="full">
         Submit
       </Button>
+      </Box>
+      )}
     </Flex>
   );
 };

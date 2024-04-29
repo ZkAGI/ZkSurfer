@@ -46,7 +46,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
     <Flex align="center" direction="column" w="full" maxW="md" mx="auto">
       <Box>
         {file ? (
-          <Text>{file.name}</Text>
+          <Text>{file.name} uploaded successfully</Text>
         ) : (
           <Button as="label" htmlFor="file-input" colorScheme="blue">
             Choose File
