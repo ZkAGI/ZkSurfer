@@ -10,12 +10,12 @@ import React from 'react';
 import { useAppState } from '../state/store';
 
 const OptionsDropdown = () => {
-  const { openAIKey, updateSettings } = useAppState((state) => ({
-    openAIKey: state.settings.openAIKey,
+  const { zynapseKey, updateSettings } = useAppState((state) => ({
+    zynapseKey: state.settings.zynapseKey,
     updateSettings: state.settings.actions.update,
   }));
 
-  if (!openAIKey) return null;
+  if (!zynapseKey) return null;
 
   return (
     <Menu>
@@ -29,7 +29,7 @@ const OptionsDropdown = () => {
         <MenuItem
           icon={<RepeatIcon />}
           onClick={() => {
-            updateSettings({ openAIKey: '' });
+            updateSettings({ zynapseKey: '' });
           }}
         >
           Reset API Key
