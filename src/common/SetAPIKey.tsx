@@ -7,7 +7,7 @@ const ModelDropdown = () => {
     updateSettings: state.settings.actions.update,
   }));
 
-  const [openAIKey, setOpenAIKey] = React.useState('');
+  const [zynapseKey, setzynapseKey] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
 
   return (
@@ -16,23 +16,23 @@ const ModelDropdown = () => {
         You'll need an Zynapse Key to run the ZkSurf in developer mode. If you
         don't already have one available, you can create one in your{' '}
         <Link
-          href="https://platform.openai.com/account/api-keys"
+          href=""
           color="blue"
           isExternal
         >
-          OpenAI account
+          zynapse account
         </Link>
         .
         <br />
         <br />
         ZkSurf stores your API key locally and securely, and it is only used to
-        communicate with the OpenAI API.
+        communicate with the zynapse API.
       </Text>
       <HStack w="full">
         <Input
-          placeholder="OpenAI API Key"
-          value={openAIKey}
-          onChange={(event) => setOpenAIKey(event.target.value)}
+          placeholder="zynapse API Key"
+          value={zynapseKey}
+          onChange={(event) => setzynapseKey(event.target.value)}
           type={showPassword ? 'text' : 'password'}
         />
         <Button
@@ -43,9 +43,9 @@ const ModelDropdown = () => {
         </Button>
       </HStack>
       <Button
-        onClick={() => updateSettings({ openAIKey })}
+        onClick={() => updateSettings({ zynapseKey })}
         w="full"
-        disabled={!openAIKey}
+        disabled={!zynapseKey}
         colorScheme="blue"
       >
         Save Key
