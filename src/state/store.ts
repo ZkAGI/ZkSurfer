@@ -42,7 +42,7 @@ export const useAppState = create<StoreType>()(
           instructions: state.ui.instructions,
         },
         settings: {
-          openAIKey: state.settings.openAIKey,
+          zynapseKey: state.settings.zynapseKey,
           selectedModel: state.settings.selectedModel,
         },
         chat: {
