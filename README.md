@@ -2,7 +2,7 @@
 
 # ZkSurfer AI: Full Browser Automation
 
-ZkSurfer uses GPT-4 to control your browser and perform repetitive actions on your behalf. Currently it allows you to define ad-hoc instructions. In the future it will also support saved and scheduled workflows.
+ZkSurfer uses Zynapse API to control your browser and perform repetitive actions on your behalf. Currently it allows you to define ad-hoc instructions. In the future it will also support saved and scheduled workflows.
 
 
 ZkSurferF is fully open-source, and we don't send any page contents or instructions to our servers.
@@ -46,7 +46,7 @@ Currently this extension is only available through this GitHub repo. We'll relea
 ## How it Works - The Action Cycle
 
 1. ZkSurfer runs a content script on the webpage to pull the entire DOM. It simplifies the html it receives to only include interactive or semantically important elements, like buttons or text. It assigns an id to each interactive element. It then "templatizes" the DOM to reduce the token count even further.
-2. ZkSurfer sends the simplified DOM, along with the user's instructions, to a selected LLM (currently GPT-3.5 and GPT-4 are supported). ZkSurfer informs the LLM of two methods to interact with the webpage:
+2. ZkSurfer sends the simplified DOM, along with the user's instructions, to a selected LLM (currently Mistral is supported). ZkSurfer informs the LLM of two methods to interact with the webpage:
    1. `click(id)` - click on the interactive element associated with that id
    2. `setValue(id, text)` - focus on a text input, clear its existing text, and type the specified text into that input
 3. When ZkSurfer gets a completion from the LLM, it parses the response for an action. The action cycle will end at this stage if any of the following conditions are met:
