@@ -33,7 +33,7 @@ import LoggedInViewComponent from '../Login/LoggenInViewComponent';
 import { FaCircleInfo } from 'react-icons/fa6';
 
 const App: React.FC = () => {
-  const openAIKey = useAppState((state) => state.settings.openAIKey);
+  const zynapseKey = useAppState((state) => state.settings.zynapseKey);
   const [loggedIn, setLoggedIn] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -146,11 +146,11 @@ const App: React.FC = () => {
 };
 
 const AppUI: React.FC = () => {
-  const openAIKey = useAppState((state) => state.settings.openAIKey);
+  const zynapseKey = useAppState((state) => state.settings.zynapseKey);
 
   return (
     <>
-      {/* {openAIKey ? <TaskUI /> : <SetAPIKey />} */}
+      {/* {zynapseKey ? <TaskUI /> : <SetAPIKey />} */}
       <TaskUI />
     </>
   );
