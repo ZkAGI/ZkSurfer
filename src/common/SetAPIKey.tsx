@@ -13,7 +13,7 @@ const ModelDropdown = () => {
   return (
     <VStack spacing={4}>
       <Text fontSize="sm">
-        You'll need an OpenAI API Key to run the ZkSurf in developer mode. If you
+        You'll need an Zynapse Key to run the ZkSurf in developer mode. If you
         don't already have one available, you can create one in your{' '}
         <Link
           href="https://platform.openai.com/account/api-keys"
