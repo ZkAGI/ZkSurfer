@@ -5,7 +5,7 @@
 ZkSurfer uses Zynapse API to control your browser and perform repetitive actions on your behalf. Currently it allows you to define ad-hoc instructions. In the future it will also support saved and scheduled workflows.
 
 
-ZkSurferF is fully open-source, and we don't send any page contents or instructions to our servers.
+ZkSurfer is fully open-source, and we don't send any page contents or instructions to our servers.
 
 
 ## Table of Contents
