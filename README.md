@@ -40,7 +40,7 @@ Currently this extension is only available through this GitHub repo. We'll relea
 1. Once installed, the browser plugin will be available in two forms:
    1. As a Popup. Activate by pressing `cmd+shift+y` on mac or `ctrl+shift+y` on windows/linux, or by clicking the extension logo in your browser.
    2. As a devtools panel. Activate by first opening the browser's developer tools, then navigating to the `ZkSurfer AI` panel.
-2. The next thing you need to do is create or access an existing [Zynapse API Key](https://platform.openai.com/account/api-keys) and paste it in the provided box. This key will be stored securely in your browser, and will not be uploaded to a third party.
+2. The next thing you need to do is create or access an existing [Zynapse API Key] and paste it in the provided box. This key will be stored securely in your browser, and will not be uploaded to a third party.
 
 ## How it Works - The Action Cycle
 
@@ -52,7 +52,7 @@ Currently this extension is only available through this GitHub repo. We'll relea
    1. The LLM believes the task is complete. Instead of an action, the LLM can return an indication that it believes the user's task is complete based on the state of the DOM and the action history up to this point.
    2. The user stopped the task's execution. The user can stop the LLM's execution at any time, without waiting for it to complete.
    3. There was an error. ZkSurfer's safety-first architecture causes it to automatically halt execution in the event of an unexpected response.
-4. ZkSurfer executes the action using the [chrome.debugger API](https://developer.chrome.com/docs/extensions/reference/debugger/).
+4. ZkSurfer executes the action using the [chrome.debugger API].
 5. The action is added to the action history and ZkSurfer cycles back to step 1 and parses the updated DOM. All prior actions are sent to the LLM as part of the prompt used to determine the next action. ZkSurfer can currently complete a maximum of 50 actions for a single task, though in practice most tasks require fewer than 10 actions.
 
 
